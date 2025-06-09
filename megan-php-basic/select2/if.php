@@ -8,7 +8,8 @@
 <body>
     
 
-<h1>第一種寫法</h1>
+<h1>成績是否及格判斷</h1>
+<h3>第一種寫法</h3>
 <?php
 // 宣告變數
 $score=50;
@@ -28,7 +29,7 @@ if($score >= 60){
 
 ?>
 
-<h1>第二種寫法：echo html元素+變數+字串</h1>
+<h3>第二種寫法：echo html元素+變數+字串</h3>
 <?php
 $score=50;
 if($score>=60){    
@@ -38,6 +39,41 @@ if($score>=60){
     echo "<h3 style='color:red'>不及格</h3>";
 }
 
+?>
+
+<H1>成績等級判斷</H1>
+<h3>老師範例</h3>
+<?php
+
+$score=60;
+if($score>=90 && $score<=100){
+    echo 'A';
+    
+}else if($score>=75 && $score <=89){
+    echo 'B';
+    
+}else if($score>=60 && $score<=74){
+    echo 'C';   
+    
+}else{
+    echo 'D';    
+}
+
+
+$score=60;
+if($score>=90 && $score<=100){
+    echo 'A';
+}else{    
+    if($score>=75 && $score <=89){
+        echo 'B';
+    }else{        
+        if($score>=60 && $score<=74){	
+        	echo 'C';        
+        }else{
+            echo 'D';
+        }        
+    }
+}
 
 ?>
 
