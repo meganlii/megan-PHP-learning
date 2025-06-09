@@ -71,7 +71,8 @@ if($score>=90 && $score<=100){
         	echo 'C';        
         }else{
             echo 'D';
-        }        
+        }
+        
     }
 }
 
