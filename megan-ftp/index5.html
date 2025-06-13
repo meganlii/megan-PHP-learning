@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* header
+    ctn-flex 分3個box
+    box 分三區
+        title
+        content-flexDire */
+
+        /* header */
+        header{
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        /* ctn-flex 分3個box */
+        .ctn-flex{
+            width: 60%;
+            height: 500px;
+            background-color: lightblue;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-around;
+        }
+
+        /* box 分三區 */
+        .box{
+            width: 25%;
+            height: 300px;
+            background-color: lightpink;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* title */
+        .title{
+            margin: 10px;
+        }
+
+        /* content-flexDire */
+        .content-flexDire{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            
+            
+        }
+
+        /* content-flexDire>div,item-link */
+        .content-flexDire>div,
+        .item-link{
+            width: 70%;
+            height: 50px;
+            background-color: lightyellow;
+            box-sizing: border-box;
+            padding-top: 10px;
+        }
+
+        .content-flexDire>div:hover,
+        .item-link:hover{
+            background-color: lightsalmon;
+
+    </style>
+</head>
+<body>
+    <!-- header
+    ctn-flex 分3個box
+    box 分三區
+        title
+        content-flexDire -->
+
+    <!-- header -->
+    <header>Megan練習作品</header>
+    <!-- ctn-flex 分3個box-->
+    <div class="ctn-flex">
+
+        <!-- box 分三區 -->
+        <div class="box">
+
+            <!-- title -->
+            <div class="title">HTML</div>
+            <!-- content-flexDire -->
+            <div class="content-flexDire">
+                <a href="" class="item-link">
+                    <div>丙級術科</div>
+
+                </a>
+                <div>課堂作業</div>
+                <div>課後作業</div>
+            </div>
+        </div>
+
+        <div class="box">
+
+            <!-- title -->
+            <div class="title">PHP</div>
+            <!-- content-flexDire -->
+            <div class="content-flexDire">
+                <div>萬年曆</div>
+                <div>課堂作業</div>
+                <div>課後作業</div>
+            </div>
+        </div>
+
+        <div class="box">
+
+            <!-- title -->
+            <div class="title">REVIEW</div>
+            <!-- content-flexDire -->
+            <div class="content-flexDire">
+                <div>每天練習</div>
+                <div>每周作業</div>
+                <div>每月專題</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
