@@ -6,35 +6,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        /* 共用設定 */
+        * {
+            font-family: 'Arial';
+            /* margin: 0; */
+        }
+        
         /* header */
         header {
             font-size: 30px;
             text-align: center;
+            margin: 20px 0;         
 
         }
 
-        /* ctn-flex */
+        /* ctn-flex 分3個box*/
         .ctn-flex {
-            background-color: lightblue;
             display: flex;
             justify-content: space-around;
-            align-items: center;
+            /* align-items: center; */  
+            
+            width: 70%;
+            height: 400px;
+            background-color: lightblue;
+            box-shadow: 2px 2px 5px gray;
+            
+            margin: auto;
+            /* ctn跟下面的content-dire 都會置中 */
+            text-align: center;        
+            
         }
 
-        /* ctn-left */
-        .ctn-left {
+        /* box 分兩區 title content*/
+        .box {
+            width: 25%;
+            height: 300px;
             background-color: lightpink;
+            box-shadow: 2px 2px 5px gray;
+            margin-top: 20px;
+            
         }
 
-        /* ctn-mid */
-        .ctn-mid {
-            background-color: lightgreen;
+        /* title */
+        .title{
+            font-size: 25px;
+            /* margin: 10px 0; */
+            padding: 10px;
         }
 
-        /* ctn-right */
-        .ctn-right {
+        /* content-flexDire */
+        .content-flexDire {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            /* background-color: lightgreen; */
+            
+        }
+
+        /* content-dire>div */
+        .content-flexDire>div,
+        .item-link {
+            width: 60%;
+            height: 50px;
             background-color: lightyellow;
+            box-sizing: border-box;
+            /* padding-top: 10px; */
+            padding: 10px;
         }
+
+        .content-flexDire>div:hover,
+        .item-link:hover {
+            background-color: lightsalmon;
+        }
+
     </style>
 </head>
 
@@ -45,28 +91,30 @@
     <!-- ctn-flex -->
     <div class="ctn-flex">
 
+        <!-- box -->
+        <div class="box">
 
-        <!-- ctn-left- -->
-        <div class="ctn-left">
+            <!-- title html-->
+            <div class="title">HTML</div>
+            <!-- content 作業項目-->
+            <div class="content-flexDire">
+                <a href="https://wda.mackliu.com/s1140202/html/levelC_test/web02/" class="item-link">
+                    <div>丙級術科</div>
 
-            <!-- cl-title html-->
-            <div class="cl-title">HTML</div>
-            <!-- cl-content 作業項目-->
-            <div class="cl-content">
-                <div>丙級術科第一題模擬測驗</div>
+                </a>
                 <div>課堂作業</div>
                 <div>課後作業</div>
             </div>
 
         </div>
 
-        <!-- ctn-mid php -->
-        <div class="ctn-mid">
+        <!-- box -->
+        <div class="box">
 
-            <!-- cm-title -->
-            <div class="cm-title">PHP</div>
-            <!-- cm-content 作業項目-->
-            <div class="cm-content">
+            <!-- title -->
+            <div class="title">PHP</div>
+            <!-- content 作業項目-->
+            <div class="content-flexDire">
                 <div>萬年曆</div>
                 <div>課堂作業</div>
                 <div>課後作業</div>
@@ -74,13 +122,13 @@
             </div>
 
         </div>
-        <!-- ctn-right 每周作業與專題 -->
-        <div class="ctn-right">
+        <!-- box -->
+        <div class="box">
 
-            <!-- cr-title -->
-            <div class="cr-title">每周作業與專題</div>
-            <!-- cr-content 作業項目-->
-            <div class="cr-content">
+            <!-- title -->
+            <div class="title">REVIEW</div>
+            <!-- content 作業項目-->
+            <div class="content-flexDire">
                 <div>每天練習</div>
                 <div>每周作業</div>
                 <div>每月專題</div>

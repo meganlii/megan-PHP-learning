@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    /* header
+ctn-flex
+    box
+        title
+        content-flexDire */
+
+        /* header */
+        header {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        /* ctn-flex */
+        .ctn-flex {
+            width: 60%;
+            height: 400px;
+            background-color: lightblue;
+            margin: auto;
+            box-shadow: 2px 5px 5px grey;
+
+            display: flex;
+            justify-content: space-around;
+            /* align-items: center; */
+
+            text-align: center;
+
+        }
+        /* box */
+        .box {
+            width: 25%;
+            height: 250px;
+            background-color: lightpink;
+            box-shadow: 2px 5px 5px grey;
+
+            margin-top: 10px;
+
+        }
+        /* title */
+        .title{
+            margin-bottom: 5px;
+            font-size: 20px;
+            margin: 10px;
+
+        }
+        /* content-flexDire */
+        .content-flexDire{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        
+
+        /* content-flexDire>div,item-link */
+        .content-flexDire>div,
+        .item-link {
+            width: 70%;
+            height: 50px;
+            background-color: lightyellow;
+            box-sizing: border-box;
+            padding-top: 10px;
+            border-radius: 5px;
+
+        }
+
+        .content-flexDire>div:hover,
+        .item-link:hover {
+            background-color: lightsalmon;
+        }
+
+        
+
+
+    </style>
+</head>
+<body>
+<!-- header
+ctn-flex
+    box
+        title
+        content-flexDire -->
+
+<!-- header -->
+<header>Megan練習作品</header>
+
+<!-- ctn-flex -->
+<div class="ctn-flex">
+
+    <!-- box html-->
+    <div class="box">
+
+        <!-- title -->
+        <div class="title">HTML</div>
+        <!-- content-flexDire -->
+        <div class="content-flexDire">
+            <a href="" class="item-link">
+                <div>丙級術科</div>
+            </a>
+            <div>課堂作業</div>
+            <div>課後練習</div>
+        </div>
+        
+    </div>
+
+    <!-- box php-->
+    <div class="box">
+
+        <!-- title -->
+        <div class="title">PHP</div>
+        <!-- content-flexDire -->
+        <div class="content-flexDire">
+            <div>萬年曆</div>
+            <div>課堂作業</div>
+            <div>課後練習</div>
+        </div>
+        
+    </div>
+
+    <!-- box review-->
+    <div class="box">
+
+        <!-- title -->
+        <div class="title">REVIEW</div>
+        <!-- content-flexDire -->
+        <div class="content-flexDire">            
+            <div>每日練習</div>
+            <div>每周作業</div>
+            <div>每月專題</div>
+        </div>
+        
+    </div>
+
+
+</div>
+
+    </body>
+
+</html>
