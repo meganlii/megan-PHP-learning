@@ -8,12 +8,53 @@
     <style>
         * {
             font-size: 30px;
+            font-family: 'Arial';
+            /* margin: auto; */
+            /* box-sizing: border-box; */
+        }
+
+        .ctn-flexDire {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            /* margin-top: 10px; */
+            /* gap: 5px; */
+
+            width: 500px;
+            height: 500px;
+            background-color: #faf9f7;
+            box-shadow: 2px 2px 5px lightgrey;
+
+            margin: auto;
+        }
+
+        .ctn-flexDire>a {
+            width: 250px;
+            height: 50px;
+            background-color: lightpink;
+            border-radius: 5px;
+            padding-top: 5px;
+            text-align: center;
+
+        }
+
+        .ctn-flexDire>a:hover {
+            background-color: lightseagreen;
         }
     </style>
 </head>
 
 <body>
-    <div class="html">
+    <!-- 參考learning.html第三部分 cr-content-flexDire -->
+
+    <div class="ctn-flexDire">
+        <a href="https://wda.mackliu.com/s1140202/html/levelC_test/web02/">html</a>
+        <a href="">php</a>
+        <a href="">其他</a>
+    </div>
+
+    <!-- <div class="html">
         <ul>
             <li><a href="https://wda.mackliu.com/s1140202/html/levelC_test/web02/">html</a></li>
         </ul>
@@ -25,7 +66,7 @@
             <li><a href="">php</a></li>
         </ul>
 
-    </div>
+    </div> -->
 </body>
 
 </html>
