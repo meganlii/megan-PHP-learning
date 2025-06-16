@@ -21,18 +21,25 @@
 <!-- 檔案上傳練習- -->
 
 0.建立三個檔案
-    upload.php
-    upload.sql 額外建立sql檔案
-    uploaded_files.php
+    頁面A：upload.php
+    頁面B：upload.sql 額外建立sql檔案
+    頁面C：uploaded_files.php    
+    頁面D：manage.php 檔案管理
+    edit_upload.php
+    del_upload
+    save_upload
 
 1.<form></form>建立 HTML 表單：設定三個屬性 
     <!-- 搭配 label 標籤-->
-    <label for="name">選擇檔案上傳：</label>  
+    <label for="name">選擇檔案上傳：</label>
+    
+    <!-- 連結頁面B：uploaded_files.php -->
     <form action="uploaded_files.php" method="post" enctype="multipart/form-data">
     
     <!-- 設定三個屬性 -->
     <!-- enc 指 encode 縮寫 -->
-    action="uploaded_files.php" 設定表單處理程式的網址
+    action="uploaded_files.php" 設定表單處理程式的 網址
+    <!-- 傳送目的地：表單資料傳送到指定網址 -->
     method="post" 設定函式：表單資料傳回web的方法
     enctype="multipart/form-data" 設定編碼方式
 

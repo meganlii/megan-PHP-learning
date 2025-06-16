@@ -36,7 +36,7 @@ $pdo->exec($sql);
 
 // PHP檔頭管理指令-header()
 // 在檔案轉送時，在檔頭加入一些資訊供接收方使用
-location:manage.php  location:網址
+location:manage.php location:網址
 ?msg= 在網址後面帶訊息過去
 
 header("location:manage.php ?msg=檔案上傳成功，檔名為：".$filename);
