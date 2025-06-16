@@ -22,8 +22,8 @@
 
 0.建立三個檔案
     upload.php
-    upload_file.php
-    upload.sql
+    upload.sql 額外建立sql檔案
+    uploaded_files.php
 
 1.<form></form>建立 HTML 表單：設定三個屬性 
     <!-- 搭配 label 標籤-->
