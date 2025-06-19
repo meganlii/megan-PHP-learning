@@ -20,7 +20,7 @@
 <body>
 <!-- 檔案上傳練習- -->
 
-0.建立7個檔案
+0.建立三個檔案
     頁面A：upload.php
     頁面B：upload.sql 額外建立sql檔案
     頁面C：uploaded_files.php    
