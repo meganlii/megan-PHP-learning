@@ -18,9 +18,12 @@
 </head>
 
 <body>
+    <!-- 老師筆記 https://mackliu.github.io/php-book/2021/09/19/basic-lesson-02/ -->
+    <!-- 成績判斷程式練習參考 https://hackmd.io/@mackliu/ryWHymuSv -->
     <h1>練習一：判斷 成績是否及格 / if else二選一 / if 單選</h1>
     <h2>[第一種寫法]</h2>
     <?php
+
     // 宣告變數
     $score = 50;
 
