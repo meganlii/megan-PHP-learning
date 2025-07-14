@@ -175,7 +175,7 @@
       border: 3px solid #fff700 !important;
     }
 
-    @keyframes pulse {
+    /* @keyframes pulse {
       0% {
         transform: scale(1);
       }
@@ -187,14 +187,14 @@
       100% {
         transform: scale(1);
       }
-    }
+    } */
 
     /* 週末的特殊樣式 */
     .weekend {
       background: linear-gradient(145deg, #ffcdd2, #f8bbd9);
     }
 
-    /* 響應式設計 */
+    /* 響應式設計
     @media (max-width: 600px) {
       .box-container {
         width: 350px;
@@ -209,7 +209,7 @@
       .box {
         height: 60px;
       }
-    }
+    } */
   </style>
 </head>
 
