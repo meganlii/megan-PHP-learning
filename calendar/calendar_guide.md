@@ -22,9 +22,25 @@
 ### 步驟2: 取得年月參數
 ```php
 // 從URL取得參數，沒有則使用當前日期
+// 三元運算子
 $month = isset($_GET['month']) ? $_GET['month'] : date("m");
 $year = isset($_GET['year']) ? $_GET['year'] : date("Y");
 ```
+<!-- ```php
+if(isset($_GET['month'])){
+    $month=$_GET['month'];  
+}else{
+    $month=date("m");
+   
+}
+
+if(isset($_GET['year'])){
+    $year=$_GET['year'];
+}else{
+    $year=date("Y");
+}
+``` -->
+
 **目的**：決定要顯示哪個月份的日曆
 
 ### 步驟3: 計算月份導航
