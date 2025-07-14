@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>線上日曆</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+    /* @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap'); */
 
     body {
       font-family: 'Nunito', sans-serif;
@@ -32,7 +32,7 @@
       font-size: 1.8em;
       font-weight: 700;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-      margin: 20px 0;
+      /* margin: 20px 0; */
     }
 
     .navigation {
@@ -46,7 +46,7 @@
     .navigation a {
       background: linear-gradient(145deg, #ff6b6b, #ee5a52);
       color: white;
-      padding: 12px 24px;
+      padding: 30px 24px;
       text-decoration: none;
       border-radius: 25px;
       font-weight: 600;
@@ -116,19 +116,19 @@
     }
 
     .day-num {
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 700;
       color: #333;
       text-align: center;
       margin-bottom: 2px;
     }
 
-    .day-week {
+    /* .day-week {
       font-size: 10px;
       color: #666;
       text-align: center;
       font-weight: 600;
-    }
+    } */
 
     .holiday-info {
       margin-top: 2px;
@@ -175,46 +175,20 @@
       border: 3px solid #fff700 !important;
     }
 
-    /* @keyframes pulse {
-      0% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.05);
-      }
-
-      100% {
-        transform: scale(1);
-      }
-    } */
-
     /* 週末的特殊樣式 */
     .weekend {
       background: linear-gradient(145deg, #ffcdd2, #f8bbd9);
     }
 
-    /* 響應式設計
-    @media (max-width: 600px) {
-      .box-container {
-        width: 350px;
-      }
-
-      .th-box,
-      .box {
-        width: 45px;
-        margin: 1px;
-      }
-
       .box {
         height: 60px;
       }
-    } */
+    
   </style>
 </head>
 
 <body>
-  <h1>🎬 皮克斯風格日曆 🎬</h1>
+  <h1>🎬 萬年曆 🎬</h1>
 
   <?php
   if (isset($_GET['month'])) {
@@ -250,15 +224,17 @@
 
 
   $spDate = [
-    '2025-04-04' => '兒童節',
-    '2025-04-05' => '清明節',
+    '2025-02-03' => '立春',
+    '2025-03-20' => '春分',
     '2025-05-11' => '母親節',
-    '2025-05-01' => '勞動節',
+    '2025-05-05' => '立夏',
     '2025-05-30' => '端午節',
-    '2025-06-06' => "生日"
+    '2025-07-07' => "小暑",
+    '2025-08-07' => "立秋",
+    '2025-10-06' => "中秋節"
   ];
 
-  $todoList = ['2025-05-01' => '開會'];
+  $todoList = ['2025-07-14' => '補交作業'];
 
   $monthDays = [];
 
@@ -286,7 +262,7 @@
     $monthDays[] = [
       "day" => date("d", $timestamp),
       "fullDate" => date("Y-m-d", $timestamp),
-      "weekOfYear" => date("W", $timestamp),
+      // "weekOfYear" => date("W", $timestamp),  移除週數資訊
       "week" => date("w", $timestamp),
       "daysOfYear" => date("z", $timestamp),
       "workday" => date("N", $timestamp) < 6 ? true : false,
@@ -295,23 +271,19 @@
     ];
   }
 
-  /* echo "<pre>";
-    print_r($monthDays);
-    echo "</pre>"; */
   ?>
 
   <div class="navigation">
     <a href="?year=<?= $prevyear; ?>&month=<?= $prev; ?>">← 上一月</a>
+    <h2><?= $year; ?>年<?= $month; ?>月</h2>
     <a href="?year=<?= $nextyear; ?>&month=<?= $next; ?>">下一月 →</a>
   </div>
 
-  <h2><?= $year; ?>年<?= $month; ?>月</h2>
 
   <?php
 
   //建立外框及標題
   echo "<div class='box-container'>";
-
   echo "<div class='th-box'>日</div>";
   echo "<div class='th-box'>一</div>";
   echo "<div class='th-box'>二</div>";
@@ -345,14 +317,16 @@
       echo "&nbsp;";
     }
     echo "</div>";
-    echo "<div class='day-week'>";
+
+    // 移除週數資訊
+    /* echo "<div class='day-week'>";
     if (isset($day['weekOfYear'])) {
       echo "W" . $day["weekOfYear"];
     } else {
-      echo "&nbsp;";
-    }
+      echo "&nbsp;";  
+     } */
 
-    echo "</div>";
+    // echo "</div>";
     echo "</div>";
 
 
