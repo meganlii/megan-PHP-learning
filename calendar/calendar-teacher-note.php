@@ -102,9 +102,6 @@
 </div> -->
 
 
-
-
-
  <h1>線上日曆</h1>  
 
  <?php
@@ -114,11 +111,13 @@ if(isset($_GET['month'])){
     $month=date("m");
    
 }
+
 if(isset($_GET['year'])){
     $year=$_GET['year'];
 }else{
     $year=date("Y");
 }
+
 if($month-1>0){
     $prev=$month-1;  //上一個月
     $prevyear=$year;
@@ -126,6 +125,7 @@ if($month-1>0){
     $prev=12;  //上一個月
     $prevyear=$year-1;
 }
+
 if($month+1>12){
     $next=1;  //下一個月
     $nextyear=$year+1;
