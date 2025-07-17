@@ -26,6 +26,13 @@ function to($url){
     header("location:".$url);
 }
 
+/*
+簡化自訂函式
+1. 可用物件導向的方式來簡化自訂函式的撰寫
+2. 考量檢定時間限制，並不是全面採用OOP
+3. 只是把常用的自訂函式，包裝成一個工具類別(Class)
+*/
+
 // 共有 const  all  count  find  save  del  arraytosql
 class DB{
 private $dsn="mysql:host=localhost;dbname=db09;charset=utf8";
