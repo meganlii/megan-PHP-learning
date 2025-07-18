@@ -2,6 +2,9 @@
 $dsn="mysql:host=localhost;dbname=files;charset=utf8";
 $pdo=new PDO($dsn,'root','');
 
+// 共有 update  insert
+// 共有 dd  q  all  count  find-查  save  del-刪  arraytosql
+
 /*
 all($table, $array = null, $str = null)
 $table: 資料表名稱 (string)

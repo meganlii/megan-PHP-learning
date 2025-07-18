@@ -1,14 +1,15 @@
 <?php
+session_start();
+date_default_timezone_set("Asia/Taipei");
+
 /*
 共用函式目的
 1. 簡化CRUD動作
 2. 減少撰寫SQL錯誤
 3. 簡化除錯過程
-
 */
 
-session_start();
-date_default_timezone_set("Asia/Taipei");
+// 共有 dd  q  to 三組函式
 
 function dd($array){
     echo "<pre>";
@@ -45,11 +46,16 @@ function __construct($table){
 }
 
 function all(...$arg){
-    $sql="select * from $this->table ";
+    $sql="select * from $this->table "; // 查詢邏輯
+    // $this->table是資料表名稱
+    // $arg是參數陣列
+    // 如果有條件陣列，則產生 WHERE 條件
+    // 如果沒有條件陣列，則直接查詢全部資料
+    // 如果有其他SQL語法，則.join附加 在SQL語句後
     if(isset($arg[0])){
         if(is_array($arg[0])){
-            $tmp=$this->arraytosql($arg[0]);
-            $sql=$sql." where ".join(" AND " , $tmp);
+            $tmp=$this->arraytosql($arg[0]);  // 產生條件陣列
+            $sql=$sql." where ".join(" AND " , $tmp);  // 產生 WHERE 條件
 
         }else{
             $sql .= $arg[0];
@@ -82,7 +88,10 @@ function count(...$arg){
     return $this->pdo->query($sql)->fetchColumn();
 }
 
-function find($id){
+// 查詢單筆資料
+// $id是主鍵值或條件陣列
+function find($id){   
+    
     $sql="select * from $this->table ";
     
     if(is_array($id)){
@@ -98,11 +107,13 @@ function find($id){
 
 function save($array){
     if(isset($array['id'])){
+        
         //update
         $sql="update $this->table set ";
         $tmp=$this->arraytosql($array);
         $sql.= join(" , ",$tmp) . "where `id`= '{$array['id']}'";
     }else{
+        
         //insert
         $cols=join("`,`",array_keys($array));
         $values=join("','",$array);
