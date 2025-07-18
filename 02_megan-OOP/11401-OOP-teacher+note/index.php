@@ -57,13 +57,12 @@
         public function __construct($name, $age)
         {
             $this->name = $name;
-            // $this什麼意思
-            // $this指向當前物件的實例
-            // 在類別內部使用$this可以訪問當前物件的屬性和方法
-            // 在建構函式中使用$this可以初始化物件的屬性
-
             $this->age = $age;
         }
+            // $this指向當前物件的實例
+            // 在類別內部使用$this  當前物件的屬性和方法
+            // 在建構函式中使用$this 初始化物件的屬性
+
 
         // 步驟4 設行為 自建 函式
         public function greet()
