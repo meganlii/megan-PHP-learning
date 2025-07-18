@@ -58,7 +58,7 @@ function all(...$arg){
             $sql=$sql." where ".join(" AND " , $tmp);  // 產生 WHERE 條件
 
         }else{
-            $sql .= $arg[0];
+            $sql .= $arg[0];    
         }
     }
 
@@ -150,7 +150,7 @@ private function arraytosql($array){
 }
 
 
-$Title=new DB('title');
+$Title=new DB('title'); 
 $Ad=new DB('ad');
 $Mvim=new DB('mvim');
 $Image=new DB('image');
