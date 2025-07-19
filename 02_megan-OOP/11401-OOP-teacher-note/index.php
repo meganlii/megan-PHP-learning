@@ -61,18 +61,21 @@
         // 取得屬性值(變數)或方法(函式)  初始化屬性(變數)  沒有回傳值
         
         // 關鍵字$this：指向/存取 的意思 (當前物件的實例) "存取"「自己的東西」 
+        // 使用 $this->屬性名稱  存取 物件的屬性
         // 英文中自我介紹This is Megan "我"是Megan
-        // 在建構函式中使用 $this 初始化物件的屬性
-        // $this->var名稱(不用$) = $var  // 使用 "$this" "->" "$var"
-        
-        
+        // [$this->屬性名稱(不用$)] = $var  // 使用 "$this" "->" "$var"
+        // 左邊[]是物件的屬性 右邊是傳入的參數
+        // 類似插入變數 {$資料表名稱}  替換成不同資料表 {$title} 
 
+        // $jason = new Person('jason', 18); 宣告物件後 自動呼叫建構子
+        // __construct('jason', 18)
+        // 建構函式會接收參數，並將其存入屬性
+        // $this->name = $jason; // 將傳入的$name參數存入物件的name屬性
         public function __construct($name, $age)
         {
             $this->name = $name;
             $this->age = $age;
         }
-            
 
         // 步驟4 設行為 自建函式
         public function greet() 
@@ -128,9 +131,9 @@
 
     $jason->setName("Mary");  // 設定 屬性值
 
-    // 使用 物件名稱->屬性名稱 取得屬性值
+    // 使用 物件名稱->屬性名稱=  取得屬性值
     // $jason->age=20;
-    // $jason->setAge(20); // 設定 屬性值
+    // $jason->setAge(20);  // 設定 屬性值
     
     echo $jason->getName();
     echo "<br>";

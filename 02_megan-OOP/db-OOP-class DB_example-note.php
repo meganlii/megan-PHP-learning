@@ -41,14 +41,17 @@ private $pdo;
 private $table;
 
 function __construct($table){
-    $this->table=$table;  // 設定 table屬性值(資料表名稱) 當作變數
+    $this->table=$table;  
+    // $this 和資料表名稱替換
+    // 讓每個 DB 物件記住自己要操作哪個資料表！
     $this->pdo=new PDO($this->dsn,"root",''); // 建立PDO物件連接資料庫
 }
 
-function all(...$arg){
+// 查詢全部資料
+function all(...$arg){   
     $sql="select * from $this->table "; // 查詢邏輯
     // $this->table 資料表名稱
-    // $arg是參數陣列
+    //...$arg 代表 可變-參數陣列
     // 如果有條件陣列，則產生 WHERE 條件
     // 如果沒有條件陣列，則直接查詢全部資料
     // 如果有其他SQL語法，則.join附加 在SQL語句後
