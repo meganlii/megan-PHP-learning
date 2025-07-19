@@ -41,13 +41,13 @@ private $pdo;
 private $table;
 
 function __construct($table){
-    $this->table=$table;
-    $this->pdo=new PDO($this->dsn,"root",'');
+    $this->table=$table;  // 設定 table屬性值(資料表名稱) 當作變數
+    $this->pdo=new PDO($this->dsn,"root",''); // 建立PDO物件連接資料庫
 }
 
 function all(...$arg){
     $sql="select * from $this->table "; // 查詢邏輯
-    // $this->table是資料表名稱
+    // $this->table 資料表名稱
     // $arg是參數陣列
     // 如果有條件陣列，則產生 WHERE 條件
     // 如果沒有條件陣列，則直接查詢全部資料
