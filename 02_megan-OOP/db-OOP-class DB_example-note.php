@@ -41,10 +41,10 @@ private $pdo;
 private $table;
 
 function __construct($table){
-    $this->table=$table;  
-    // $this 和資料表名稱替換
+    $this->table = $table;  
+    // $this 替換 資料表名稱 
     // 讓每個 DB 物件記住自己要操作哪個資料表！
-    $this->pdo=new PDO($this->dsn,"root",''); // 建立PDO物件連接資料庫
+    $this->pdo = new PDO($this->dsn,"root",''); // 建立PDO物件連接資料庫
 }
 
 // 查詢全部資料
