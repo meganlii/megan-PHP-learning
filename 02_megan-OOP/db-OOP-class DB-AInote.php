@@ -41,7 +41,7 @@ class DB
   // 取得所有資料，可加條件
   function all(...$arg)
   {
-    $sql = "select * from $this->table ";
+    $sql = "select * from $this->table ";  // SQL語句 SELECT * FROM 資料表
     if (isset($arg[0])) {
       if (is_array($arg[0])) {
         $tmp = $this->arraytosql($arg[0]);

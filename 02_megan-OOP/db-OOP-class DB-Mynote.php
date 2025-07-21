@@ -65,39 +65,43 @@ class DB
         $this->table = $table;  // $this 替換 資料表名稱
 
 
-        // 3-2 使用 new語法 建立一個PDO連線物件，並將這個物件指定給一個變數$pdo
-        // $pdo = new PDO($dsn,'root','');
-        // 使用$this->dsn 取得資料庫連線設定
-        // $this->dsn = $dsn = "mysql:host=localhost;dbname=db09;charset=utf8"
+        // 3-2 $this->dsn = $dsn = "mysql:host=localhost;dbname=db09;charset=utf8"
+        // PHP 內建類別PDO 不需要自己宣告
+        // 同時建立另一個PDO物件(內部建立的PDO物件)，存放在$this->pdo屬性中
+        // 物件包含物件的概念 建構子下有兩個$this
         $this->pdo = new PDO(  // PDO也是一個物件
             $this->dsn,  // 資料庫的設定資料：資料庫位置和名稱
-            "root", // 使用者名稱
-            ''      // 密碼（空白）
+            "root",      // 使用者名稱
+            ''           // 密碼（空白）
         );
     }
 
     // 步驟4 自訂函式
     // 4-1 查詢 全部資料
+    // (...$arg) 代表 可變參數陣列，允許傳入多個參數
+    // 如果有傳入參數，則根據參數來修改 SQL 語句
     function all(...$arg)
     {
         $sql = "select * from $this->table "; // 查詢邏輯
-        // $this->table 資料表名稱
-        //...$arg 代表 可變-參數陣列
-        // 如果有條件陣列，則產生 WHERE 條件
-        // 如果沒有條件陣列，則直接查詢全部資料
-        // 如果有其他SQL語法，則.join附加 在SQL語句後
-        if (isset($arg[0])) {
+        // $this->table = 資料表名稱
+        // $this->table = 'title'
+        // 所以 $sql = "select * from title"
+
+        // 處理第一個參數
+        if (isset($arg[0])) {   // isset()檢查是否有傳入條件陣列或SQL
+
+            // 如果第一個參數是陣列，則將陣列轉換為SQL條件字串
+            // 如果第一個參數不是陣列，則直接附加到SQL語句後
             if (is_array($arg[0])) {
                 $tmp = $this->arraytosql($arg[0]);  // 產生條件陣列
-                $sql =
-                    $sql
-                    . " where "
-                    . join(" AND ", $tmp);  // 產生 WHERE 條件
+                $sql = $sql . " where " . join(" AND ", $tmp);  // 產生 WHERE 條件
             } else {
                 $sql .= $arg[0];
             }
         }
 
+        // 處理第二個參數
+        // 如果有第二個參數，則附加到SQL語句後
         if (isset($arg[1])) {
             $sql .= $arg[1];
         }
