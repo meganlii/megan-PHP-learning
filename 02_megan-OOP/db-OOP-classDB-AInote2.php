@@ -1,5 +1,5 @@
 <?php
-<?php // PHP 檔案開頭
+// PHP 檔案開頭
 // 重複的 <?php 可以刪除，保留一個即可
 
 session_start(); // 啟動 session，讓網頁可以記錄使用者狀態（如登入、計數等）
