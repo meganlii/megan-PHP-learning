@@ -1,6 +1,9 @@
 <?php
-session_start();
-date_default_timezone_set("Asia/Taipei");
+session_start(); // 啟動 session，讓網頁可以記錄使用者狀態（如登入、計數等）
+// 每個需要使用 Session 的頁面都要先呼叫 session_start()
+// 用來在不同網頁間保存使用者資料的機制
+
+date_default_timezone_set("Asia/Taipei"); // 設定預設時區為台北，避免時間錯誤
 
 /*
 共用函式目的
@@ -10,21 +13,22 @@ date_default_timezone_set("Asia/Taipei");
 */
 
 // 共有 dd  q  to 三組函式
-
-function dd($array)
+function dd($array)   // 陣列除錯用/測試用，格式化輸出內容，方便開發時檢查資料
 {
-    echo "<pre>";
-    print_r($array);
-    echo "</pre>";
+    echo "<pre>";     // 格式化輸出
+    print_r($array);  // print_r() 函式 輸出變數的結構和內容
+    echo "</pre>";    // 關閉格式化輸出
 }
 
-function q($sql)
+function q($sql)   // classDB函式處理不了 較複雜的SQL語法 用這個Query()
 {
     $dsn = 'mysql:host=localhost;dbname=db09;charset=utf8';
     $pdo = new PDO($dsn, 'root', '');
     return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// PHP檔頭管理指令-header()
+// 重新導向到指定網址  在程式中跳轉到其他頁面
 function to($url)
 {
     header("location:" . $url);
@@ -41,6 +45,7 @@ function to($url)
 // 共7個FN：const  all  count  find  save  del  arraytosql
 
 // 步驟1 宣告類別DB
+// 類別名稱：大寫開頭
 class DB
 {
 
@@ -78,35 +83,58 @@ class DB
 
     // 步驟4 自訂函式
     // 4-1 查詢 全部資料
-    // (...$arg) 代表 可變參數陣列，允許傳入多個參數
+    // (...$arg) 可變參數陣列，允許傳入多個參數
     // 如果有傳入參數，則根據參數來修改 SQL 語句
     function all(...$arg)
     {
-        $sql = "select * from $this->table "; // 查詢邏輯
+        $sql = "select * from $this->table "; // 基本查詢語句，選取資料表所有欄位
         // $this->table = 資料表名稱
         // $this->table = 'title'
         // 所以 $sql = "select * from title"
 
         // 處理第一個參數
-        if (isset($arg[0])) {   // isset()檢查是否有傳入條件陣列或SQL
+        if (isset($arg[0])) {   // isset()  檢查是否有傳入條件陣列或SQL
 
-            // 如果第一個參數是陣列，則將陣列轉換為SQL條件字串
-            // 如果第一個參數不是陣列，則直接附加到SQL語句後
+            // 如果第一個參數是陣列， 
             if (is_array($arg[0])) {
-                $tmp = $this->arraytosql($arg[0]);  // 產生條件陣列
-                $sql = $sql . " where " . join(" AND ", $tmp);  // 產生 WHERE 條件
+                $tmp = $this->arraytosql($arg[0]);  // arraytosql() 將陣列轉換為SQL條件字串
+                
+                $sql = $sql . " where " . join(" AND ", $tmp);  // AND拼接 WHERE 條件字串
+                // join() 將陣列元素連接成字串  AND 連接 多條件查詢
+                // 多個查詢條件用 "AND" 連接
+                // 如果$tmp為SQL多條件字串
+                // join(" AND ", ['id' => 1, 'name' => 'John'])
+                // 會輸出：`id`='1' AND `name`='John'  (`id`=1 數字可不用' ')
+
+                
+            // 如果第一個參數不是陣列，則直接附加到SQL語句後
             } else {
                 $sql .= $arg[0];
+                // 將原本的 $sql 變數內容保留，準備在後面加上新內容
+                // 等同於 $sql .= " where id=1"
+                // 例如：$sql = "select * from title
+                // 程式假設使用者傳入的是完整的 SQL 片段，不用再加"where" ~ 不太懂
+                
             }
         }
 
         // 處理第二個參數
         // 如果有第二個參數，則附加到SQL語句後
+        // 例如：$sql .= " order by id desc"
+        // 第二參數常用在查詢時指定排序貨其他 SQL 附加條件（如 ORDER BY 或 LIMIT）
+        // 
+        // 例如：$arg[1] = " order by id desc"
+        // 例如：$sql = "select * from title order by id desc"
         if (isset($arg[1])) {
             $sql .= $arg[1];
         }
 
-        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        // 執行 SQL 查詢並返回結果
+        // fetchAll(PDO::FETCH_ASSOC) 取得所有結果，並以關聯陣列形式返回資料
+        // PDO::FETCH_ASSOC 只返回關聯陣列(二維)，不返回數字索引
+        // 自訂函式用 return 回傳資料
+        // 共三組參數 $this->pdo  // query($sql) 執行 SQL 查詢  // fetchAll(PDO::FETCH_ASSOC)
+        return $this->pdo -> query($sql) -> fetchAll(PDO::FETCH_ASSOC);
     }
 
     // 4-2 查詢 資料筆數
