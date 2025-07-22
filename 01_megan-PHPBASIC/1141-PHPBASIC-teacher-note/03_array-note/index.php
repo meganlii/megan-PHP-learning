@@ -32,8 +32,10 @@ $students=[
 } */
 
 
-//建立一個變數來儲存$students的所有鍵名 $names=['judy','amo','john','peter','hebe'];
 $names=array_keys($students);
+// array_keys() 內建函式：將key或index取出為一個陣列
+// 建立一個變數來儲存$students的所有鍵名 
+// $names=['judy','amo','john','peter','hebe'];
 
 //建立一個迴圈來印出$names的所有鍵名
 for($i=0;$i<count($names);$i++){

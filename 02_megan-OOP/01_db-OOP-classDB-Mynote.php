@@ -16,7 +16,7 @@ date_default_timezone_set("Asia/Taipei"); // 設定預設時區為台北，避�
 function dd($array)   // 陣列除錯用/測試用，格式化輸出內容，方便開發時檢查資料
 {
     echo "<pre>";     // 格式化輸出
-    print_r($array);  // print_r() 函式 輸出變數的結構和內容
+    print_r($array);  // print_r() 函式 以易讀 保持格式化的結構 輸出變數的結構和內容
     echo "</pre>";    // 關閉格式化輸出
 }
 
@@ -93,7 +93,7 @@ class DB
         // 所以 $sql = "select * from title"
 
         // 處理第一個參數
-        if (isset($arg[0])) {   // isset()  檢查是否有傳入條件陣列或SQL
+        if (isset($arg[0])) {   // isset()  檢查是否成立 有傳入資料
 
             // 如果第一個參數是陣列， 
             if (is_array($arg[0])) {
@@ -138,6 +138,7 @@ class DB
     }
 
     // 4-2 查詢 資料筆數
+    // count() 內建函式
     function count(...$arg)
     {
         $sql = "select count(*) from $this->table ";
@@ -154,7 +155,10 @@ class DB
             $sql .= $arg[1];
         }
 
-        return $this->pdo->query($sql)->fetchColumn();
+        return $this->pdo->query($sql)->fetchColumn(); 
+        // fetchColumn() 只返回第一列的第一個欄位值
+        // 例如：如果查詢結果是 10 筆資料，則返回 10
+        
     }
 
     // 4-3 查詢 單筆資料
