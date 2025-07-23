@@ -12,7 +12,7 @@ date_default_timezone_set("Asia/Taipei"); // 設定預設時區為台北，避�
 3. 簡化除錯過程
 */
 
-// 共有 dd  q  to 三組函式
+// 共有 dd  q  to 三組函式： 除錯 資料庫 跳轉
 function dd($array)   // 陣列除錯用/測試用，格式化輸出內容，方便開發時檢查資料
 {
     echo "<pre>";     // 格式化輸出
@@ -98,7 +98,7 @@ class DB
             // 如果第一個參數是陣列， 
             if (is_array($arg[0])) {
                 $tmp = $this->arraytosql($arg[0]);  // arraytosql() 將陣列轉換為SQL條件字串
-                
+
                 $sql = $sql . " where " . join(" AND ", $tmp);  // AND拼接 WHERE 條件字串
                 // join() 將陣列元素連接成字串  AND 連接 多條件查詢
                 // 多個查詢條件用 "AND" 連接
@@ -106,15 +106,15 @@ class DB
                 // join(" AND ", ['id' => 1, 'name' => 'John'])
                 // 會輸出：`id`='1' AND `name`='John'  (`id`=1 數字可不用' ')
 
-                
-            // 如果第一個參數不是陣列，則直接附加到SQL語句後
+
+                // 如果第一個參數不是陣列，則直接附加到SQL語句後
             } else {
                 $sql .= $arg[0];
                 // 將原本的 $sql 變數內容保留，準備在後面加上新內容
                 // 等同於 $sql .= " where id=1"
                 // 例如：$sql = "select * from title
                 // 程式假設使用者傳入的是完整的 SQL 片段，不用再加"where" ~ 不太懂
-                
+
             }
         }
 
@@ -134,7 +134,7 @@ class DB
         // PDO::FETCH_ASSOC 只返回關聯陣列(二維)，不返回數字索引
         // 自訂函式用 return 回傳資料
         // 共三組參數 $this->pdo  // query($sql) 執行 SQL 查詢  // fetchAll(PDO::FETCH_ASSOC)
-        return $this->pdo -> query($sql) -> fetchAll(PDO::FETCH_ASSOC);
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // 4-2 查詢 資料筆數
@@ -155,10 +155,10 @@ class DB
             $sql .= $arg[1];
         }
 
-        return $this->pdo->query($sql)->fetchColumn(); 
+        return $this->pdo->query($sql)->fetchColumn();
         // fetchColumn() 只返回第一列的第一個欄位值
         // 例如：如果查詢結果是 10 筆資料，則返回 10
-        
+
     }
 
     // 4-3 查詢 單筆資料
