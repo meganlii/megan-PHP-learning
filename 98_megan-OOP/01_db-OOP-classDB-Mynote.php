@@ -230,7 +230,7 @@ class DB
 
 // 建立資料庫物件
 // 使用 new語法 建立一個DB連線物件，並將這個物件指定給一個變數$DB
-// $DB = new DB('資料表名稱');
+// $DB(大寫開頭) = new DB('資料表名稱');
 $Title = new DB('title');
 $Ad = new DB('ad');
 $Mvim = new DB('mvim');
@@ -241,7 +241,7 @@ $Menu = new DB('menu');
 $Total = new DB('total');
 $Bottom = new DB('bottom');
 
-
+// $_SESSION 內建變數'visit'
 if (!isset($_SESSION['visit'])) {
     //第一次來訪
     $t = $Total->find(1);
