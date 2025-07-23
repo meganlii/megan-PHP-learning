@@ -1,9 +1,11 @@
 <?php
-session_start(); // 啟動 session，讓網頁可以記錄使用者狀態（如登入、計數等）
-// 每個需要使用 Session 的頁面都要先呼叫 session_start()
-// 用來在不同網頁間保存使用者資料的機制
+session_start(); 
+// 啟用 session：讓網頁可以記錄使用者狀態（如登入、計數等）
+// 每個需要使用 Session 的頁面，都要先呼叫 session_start()
+// 用來在不同網頁間，保存使用者資料的機制
 
-date_default_timezone_set("Asia/Taipei"); // 設定預設時區為台北，避免時間錯誤
+date_default_timezone_set("Asia/Taipei"); 
+// 設定預設時區為台北，避免時間錯誤
 
 /*
 共用函式目的
