@@ -13,12 +13,12 @@ https://mackliu.github.io/php-book/2021/09/20/db-lesson-03/
 */
 
 
-session_start(); 
+session_start();
 // 啟用 session：讓網頁可以記錄使用者狀態（如登入、計數等）
 // 每個需要使用 Session 的頁面，都要先呼叫 session_start()
 // 用來在不同網頁間，保存使用者資料的機制
 
-date_default_timezone_set("Asia/Taipei"); 
+date_default_timezone_set("Asia/Taipei");
 // 設定預設時區為台北，避免時間錯誤
 
 /* 共用函式目的
@@ -100,7 +100,9 @@ class DB
 
 
     // 步驟3 建構函式
-    // 讓每個 DB 物件記住自己要操作哪個資料表！
+    // 建立建構式，在建構時帶入table名稱會建立資料庫的連線
+    // 建構函式：當建立物件時自動執行
+    // 建構式為物件被實例化(new DB)時會先執行的方法
     function __construct($table)
     {
 
@@ -119,13 +121,13 @@ class DB
         );
     }
 
-// 步驟4 自訂函式
-/** 
- * 4-1 $table->all()-查詢 符合條件的 全部資料 select *
- *      處理不同類型的查詢需求  用來取得符合條件的所有資料
- *      (...$arg) 可變參數陣列，允許傳入多個參數
- *      如果有傳入參數，則根據參數來修改 SQL 語句
- **/
+    // 步驟4 自訂函式
+    /** 
+     * 4-1 $table->all()-查詢 符合條件的 全部資料 select *
+     *      處理不同類型的查詢需求  用來取得符合條件的所有資料
+     *      (...$arg) 可變參數陣列，允許傳入多個參數
+     *      如果有傳入參數，則根據參數來修改 SQL 語句
+     **/
 
     function all(...$arg)
     {
@@ -136,14 +138,14 @@ class DB
 
         // 處理第一個參數
         // isset()  檢查是否成立 有傳入資料
-        if (isset($arg[0])) {  
+        if (isset($arg[0])) {
 
             // is_array() 如果第一個參數是陣列
             if (is_array($arg[0])) {
-                $tmp = $this->arraytosql($arg[0]);   
+                $tmp = $this->arraytosql($arg[0]);
                 //arraytosql() 將陣列轉換為SQL條件字串
 
-                $sql = $sql . " where " . join(" AND ", $tmp);  
+                $sql = $sql . " where " . join(" AND ", $tmp);
                 // 留意點.運算子  AND拼接 WHERE 條件字串
                 // join() 將陣列元素連接成字串  AND 連接 多條件查詢
                 // 多個查詢條件用 "AND" 連接
@@ -154,7 +156,7 @@ class DB
                 // select * from users where `id`='1' AND `name`='John'
 
 
-            // 如果第一個參數不是陣列，則直接附加到SQL語句後
+                // 如果第一個參數不是陣列，則直接附加到SQL語句後
             } else {
                 $sql .= $arg[0];
                 // 將原本的 $sql 變數內容保留，準備在後面加上新內容
@@ -177,7 +179,7 @@ class DB
         }
 
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);  // 取回全部 關聯陣列
-        
+
         // 執行 SQL 查詢並返回結果
         // fetchAll(PDO::FETCH_ASSOC) 取得所有結果，並以關聯陣列形式返回資料
         // PDO::FETCH_ASSOC 只返回關聯陣列(二維)，不返回數字索引
@@ -199,11 +201,10 @@ class DB
         PDO::FETCH_NUM    回傳 帶欄位索引的資料
         // 索引陣列 [0 => 'John', 1 => 25]
         */
-        
     }
 
-// 4-2 查詢 資料筆數 select count(*) --從這邊開始看
-// count() SQL內建函式 聚合函式
+    // 4-2 查詢 資料筆數 select count(*) --從這邊開始看
+    // count() SQL內建函式 聚合函式
     function count(...$arg)
     {
         $sql = "select count(*) from $this->table ";
@@ -216,7 +217,7 @@ class DB
                 $tmp = $this->arraytosql($arg[0]);
                 $sql = $sql . " where " . join(" AND ", $tmp);
 
-            // 如果第一個參數不是陣列，則直接附加到SQL語句後
+                // 如果第一個參數不是陣列，則直接附加到SQL語句後
             } else {
                 $sql .= $arg[0];
             }
@@ -233,12 +234,12 @@ class DB
 
     }
 
-// 4-3 $table->find($id)-查詢 符合條件的 單筆資料 select *
-/** 
- *      回傳資料表指定id的資料 $id是主鍵值或條件陣列
- * 
- * 
-*/
+    // 4-3 $table->find($id)-查詢 符合條件的 單筆資料 select *
+    /** 
+     *      回傳資料表指定id的資料 $id是主鍵值或條件陣列
+     * 
+     * 
+     */
 
 
     function find($id)
@@ -254,8 +255,8 @@ class DB
         return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     }
 
-// 4-4 儲存資料：update、insert
-// $array 要儲存的資料陣列
+    // 4-4 儲存資料：update、insert
+    // $array 要儲存的資料陣列
     function save($array)
     {
         if (isset($array['id'])) {
@@ -275,7 +276,7 @@ class DB
         return $this->pdo->exec($sql);
     }
 
-// 4-5 刪除資料
+    // 4-5 刪除資料
     function del($id)
     {
         $sql = "delete  from $this->table ";
@@ -290,7 +291,7 @@ class DB
         return $this->pdo->exec($sql);
     }
 
-// 4-6 將陣列轉換為SQL條件字串
+    // 4-6 將陣列轉換為SQL條件字串
     private function arraytosql($array)
     {
         $tmp = [];
@@ -303,8 +304,14 @@ class DB
 }
 
 // 建立資料庫物件
-// 使用 new語法 建立一個DB連線物件，並將這個物件指定給一個變數$DB
-// $DB(大寫開頭) = new DB('資料表名稱');
+/** 
+ * 使用 new語法 建立一個DB連線物件，並將這個物件指定給一個變數$DB
+ * 變數$DB(大寫開頭) = new DB('資料表名稱');
+ * 建立一個專門處理 [ title 資料表] 的 [ 物件 $Title ]
+ * $Title 物件變數  ['title'] 數值/參數
+ * 用法 $title = $Title->find(1);
+ **/
+
 $Title = new DB('title');
 $Ad = new DB('ad');
 $Mvim = new DB('mvim');
@@ -319,7 +326,7 @@ $Bottom = new DB('bottom');
 // 網站訪客計數器
 if (!isset($_SESSION['visit'])) {
     // 檢查是否為新訪客：檢查 Session 中是否有 'visit' 標記(變數/key值)
-    
+
     // 第一次來訪
     // 如果沒有設定，表示這是使用者第一次造訪網站
 
@@ -360,4 +367,3 @@ if (!isset($_SESSION['visit'])) {
 同一使用者再次訪問（重新整理頁面等）
     $_SESSION['visit'] = 1 已存在 → 跳過計數邏輯，不重複加 1
 */
-
