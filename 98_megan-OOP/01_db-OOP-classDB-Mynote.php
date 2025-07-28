@@ -1,6 +1,21 @@
 <?php
+// 老師題組一解題說明
+// https://bquiz.mackliu.com/solve/solve01-02.html
 
-// 4-1 重看  4-2 查詢 資料筆數--從這邊開始看  7/28
+// 總共2+3+6+1 = 12個函式
+/**
+ * 記憶技巧 寫完時間 老師15分 同學25分 
+ *  1.先寫全域函式 *2 + *3
+ *  2.再寫DB類別  *6
+ *  3.寫FN( )，先寫名稱與變數  例 function all(...$arg)
+ *    all//find(查R) count  save(增C.改U)//del(刪D)  
+ *    arraytosql
+ *  4.再寫new DB('table') 物件
+ *    $Title = new DB('title');
+ *  5.最後寫訪客計數器
+ *    if(!isset($_SESSION['visit'])){...}
+ **/
+
 
 /* 搭配講義註解
 1.[技能檢定]網頁乙級檢定-前置作業-程式功能整合測試-基礎
@@ -9,7 +24,7 @@ https://mackliu.github.io/php-book/2024/01/03/skill-check1-init-04/
 2. [資料庫] Lesson 3 SQL 語法
 https://mackliu.github.io/php-book/2021/09/20/db-lesson-03/
 
-3. 總共2+3+7 = 12個函式
+3. 
 */
 
 
@@ -43,6 +58,7 @@ function dd($array)   // 陣列除錯用/測試用，格式化輸出內容，方
 
 function q($sql)   // 複雜SQL語法的簡化函式
 // classDB函式處理不了 解決聯表查詢或是子查詢
+// 只有題組三會用到 直接執行SQL語句，並返回結果 不會用到class DB
 
 {
     $dsn = 'mysql:host=localhost;dbname=db09;charset=utf8';
@@ -80,7 +96,7 @@ function to($url)  // 接收一個參數 $url（要跳轉的目標網址）
 */
 
 /* 資料庫操作類別 (Database Access Object, DAO) 
-共7個FN：const  all/find(查R)  count save(增C.改U)  del(刪D)  arraytosql
+共7個FN：const  all//find(查R)  count  save(增C.改U)//del(刪D)  arraytosql
 */
 
 // 步驟1 宣告類別DB
@@ -108,7 +124,7 @@ class DB
     {
 
         // 3-1 使用 [$this->屬性名稱(不用$)]  存取 物件的屬性(變數) 
-        $this->table = $table;  // $this 替換 資料表名稱
+        $this->table = $table;  // $this 替換 資料表名稱 帶參數的概念
 
 
         // 3-2 $this->dsn = $dsn = "mysql:host=localhost;dbname=db09;charset=utf8"
@@ -135,21 +151,25 @@ class DB
      **/
 
 
+    // 錄製_2025_06_24_09_36_32_40-1300-步驟3 建立共用函式檔
+    // 對照OOP-db.php FN all()寫法
     function all(...$arg)
     {
-        $sql = "select * from $this->table";
+        // 步驟1：建立查詢語句
+        $sql = "select * from $this->table "; // table後面空一格
         // 查詢 基本語句，選取資料表所有欄位
         // $this->table = 資料表名稱  'title'
         // 輸出 $sql = "select * from title"
 
-        // 處理第一個參數
+        // 步驟3：處理第一個參數
         // isset()  檢查是否成立 有傳入資料
         if (isset($arg[0])) {
 
-            // is_array() 如果第一個參數是陣列
+            // 步驟4：is_array() 如果第一個參數是陣列
             if (is_array($arg[0])) {
+                
+                // 步驟2：arraytosql() 將陣列轉換為SQL條件字串
                 $tmp = $this->arraytosql($arg[0]);
-                // arraytosql() 將陣列轉換為SQL條件字串
                 // 簡稱 a2s()
 
                 $sql = $sql . 
@@ -183,7 +203,7 @@ class DB
             }
         }
 
-        // 處理第二個參數
+        // 步驟5：處理第二個參數
         // 如果有第二個參數，則附加到SQL語句where之後
         // 例如：$sql .= " order by id desc"
         // 第二參數 可為條件句-兩者之間BETWEEN  特殊指定IN 
@@ -253,10 +273,9 @@ class DB
 
     }
 
-    //  select *
-    /** 
-     * 4-2 $table->find($id)-查詢 符合條件的 "單筆資料"
-     *     回傳資料表指定id的資料 $id是主鍵值或條件陣列
+    /**  複製all()，變數改為($id)  刪除isset()
+     * 4-2 $table->find($id)-查詢 符合條件的 "單筆資料" select *
+     *     找某個特定id的資料  回傳資料表指定id的資料 
      *     find() 函數 - 固定參數  VS 不定參數
      *     $id 一定存在，因為是必要參數
      *     只需要檢查 $id 的「類型」，不用檢查「是否存在isset()」
@@ -303,6 +322,7 @@ class DB
  *     $arg 必須是陣列，但考量速度，程式中沒有特別檢查是否為陣列
  **/
 
+    // {$array['id']}看不懂???
     function save($array)
     {
         // 如果 $array 中有 'id' 鍵
@@ -331,6 +351,7 @@ class DB
         return $this->pdo->exec($sql);
     }
 
+    // 複製find()
     // 4-5 刪除資料
     function del($id)
     {
@@ -344,16 +365,23 @@ class DB
         }
         //echo $sql;
         return $this->pdo->exec($sql);
+        // 查詢query($sql) 改成 執行exec() SQL 語句
     }
 
-    // 4-6 將陣列轉換為SQL條件字串
+    // 4-6 將 陣列 轉換為 SQL條件字串
+    // 簡稱 a2s()
     private function arraytosql($array)
     {
+        // 步驟2：初始化一個空陣列 $tmp
         $tmp = [];
+
+        // 步驟1：先寫 foreach 迴圈
         foreach ($array as $key => $value) {
-            $tmp[] = "`$key`='$value'";
+            $tmp[] = " `$key` = '$value' ";
         }
 
+        // 步驟3：回傳 $tmp 陣列
+        // 將每個鍵值對轉換為 SQL 條件字串
         return $tmp;
     }
 }
