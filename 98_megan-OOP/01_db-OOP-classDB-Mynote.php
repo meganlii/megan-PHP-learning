@@ -63,6 +63,7 @@ function q($sql)   // 複雜SQL語法的簡化函式
         // 處理表單...
         to("success.php");
     }
+5. 不用前後端跳頁
 */
 function to($url)  // 接收一個參數 $url（要跳轉的目標網址）
 {
@@ -79,7 +80,7 @@ function to($url)  // 接收一個參數 $url（要跳轉的目標網址）
 */
 
 /* 資料庫操作類別 (Database Access Object, DAO) 
-共7個FN：const  all  count  find  save  del  arraytosql
+共7個FN：const  all/find(查R)  count save(增C.改U)  del(刪D)  arraytosql
 */
 
 // 步驟1 宣告類別DB
@@ -123,18 +124,23 @@ class DB
 
     // 步驟4 自訂函式
     /** 
-     * 4-1 $table->all()-查詢 符合條件的 全部資料 select *
-     *      處理不同類型的查詢需求  用來取得符合條件的所有資料
-     *      (...$arg) 可變參數陣列，允許傳入多個參數
-     *      如果有傳入參數，則根據參數來修改 SQL 語句
+     * 4-1 $table->all()-查詢 符合條件的 "全部資料" select *
+     *     使用 "..." 可變/不定(數量的)參數  三個...
+     *     (...$arg) 可變參數陣列，表示可以接收0個或多個參數
+     *     參數會被包裝成陣列 $arg
+     *     如果有傳入參數$arg[0][1]，則根據參數來修改 SQL 語句
+     *     all();                           // 0個參數 ✓
+     *     all(['name' => 'John']);         // 1個參數 ✓  
+     *     all(['age' => 25], "ORDER BY id"); // 2個參數 ✓
      **/
+
 
     function all(...$arg)
     {
-        $sql = "select * from $this->table "; // 基本查詢語句，選取資料表所有欄位
-        // $this->table = 資料表名稱
-        // $this->table = 'title'
-        // 所以 $sql = "select * from title"
+        $sql = "select * from $this->table";
+        // 查詢 基本語句，選取資料表所有欄位
+        // $this->table = 資料表名稱  'title'
+        // 輸出 $sql = "select * from title"
 
         // 處理第一個參數
         // isset()  檢查是否成立 有傳入資料
@@ -143,12 +149,22 @@ class DB
             // is_array() 如果第一個參數是陣列
             if (is_array($arg[0])) {
                 $tmp = $this->arraytosql($arg[0]);
-                //arraytosql() 將陣列轉換為SQL條件字串
+                // arraytosql() 將陣列轉換為SQL條件字串
+                // 簡稱 a2s()
 
-                $sql = $sql . " where " . join(" AND ", $tmp);
-                // 留意點.運算子  AND拼接 WHERE 條件字串
-                // join() 將陣列元素連接成字串  AND 連接 多條件查詢
-                // 多個查詢條件用 "AND" 連接
+                $sql = $sql . 
+                " where " . join(" AND ", $tmp);
+                
+                // 拚接sql語句
+                // 留意 (點.)運算子  WHERE前後有空格
+                // AND拼接 WHERE 條件字串
+                // 將語法字串及參數帶入 取得一個完整的SQL句子
+                
+                // join() 是 PHP 函數，用來將陣列元素串接成字串
+                // 第一個參數 " AND " 是分隔符號 連接多條件查詢
+                // 第二個參數 $tmp 是要串接的陣列
+                
+                // 多個查詢條件 用 "AND" 連接
                 // 如果$tmp為SQL多條件字串
                 // join(" AND ", ['id' => 1, 'name' => 'John'])
                 // 輸出：`id`='1' AND `name`='John'  (`id`=1 數字可不用' ')
@@ -156,7 +172,7 @@ class DB
                 // select * from users where `id`='1' AND `name`='John'
 
 
-                // 如果第一個參數不是陣列，則直接附加到SQL語句後
+            // 如果第一個參數不是陣列，則直接附加到SQL語句後
             } else {
                 $sql .= $arg[0];
                 // 將原本的 $sql 變數內容保留，準備在後面加上新內容
@@ -168,9 +184,10 @@ class DB
         }
 
         // 處理第二個參數
-        // 如果有第二個參數，則附加到SQL語句後
+        // 如果有第二個參數，則附加到SQL語句where之後
         // 例如：$sql .= " order by id desc"
-        // 第二參數常用在查詢時指定排序貨其他 SQL 附加條件（如 ORDER BY 或 LIMIT）
+        // 第二參數 可為條件句-兩者之間BETWEEN  特殊指定IN 
+        // 或 限制句 如 排序ORDER BY 或 限制筆數LIMIT
         // 
         // 例如：$arg[1] = " order by id desc"
         // 例如：$sql = "select * from title order by id desc"
@@ -180,6 +197,7 @@ class DB
 
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);  // 取回全部 關聯陣列
 
+        // 將sql句子帶進pdo的query方法中，並以fetchAll()方式回傳所有的結果
         // 執行 SQL 查詢並返回結果
         // fetchAll(PDO::FETCH_ASSOC) 取得所有結果，並以關聯陣列形式返回資料
         // PDO::FETCH_ASSOC 只返回關聯陣列(二維)，不返回數字索引
@@ -203,7 +221,7 @@ class DB
         */
     }
 
-    // 4-2 查詢 資料筆數 select count(*) --從這邊開始看
+    // 4-3 查詢 資料筆數 select count(*)
     // count() SQL內建函式 聚合函式
     function count(...$arg)
     {
@@ -224,6 +242,7 @@ class DB
         }
 
         // 處理第二個參數
+        // 如果有第二個參數，則附加到SQL語句where之後
         if (isset($arg[1])) {
             $sql .= $arg[1];
         }
@@ -234,42 +253,78 @@ class DB
 
     }
 
-    // 4-3 $table->find($id)-查詢 符合條件的 單筆資料 select *
+    //  select *
     /** 
-     *      回傳資料表指定id的資料 $id是主鍵值或條件陣列
-     * 
-     * 
-     */
+     * 4-2 $table->find($id)-查詢 符合條件的 "單筆資料"
+     *     回傳資料表指定id的資料 $id是主鍵值或條件陣列
+     *     find() 函數 - 固定參數  VS 不定參數
+     *     $id 一定存在，因為是必要參數
+     *     只需要檢查 $id 的「類型」，不用檢查「是否存在isset()」
+     *     find();           // ❌ 錯誤！缺少必要參數
+     *     find(1);          // ✓ 正確
+     *     find(['name' => 'John']); // ✓ 正確
+     *     比較
+     * all(...$arg)：不定參數 → 需要用 isset() 檢查參數是否存在
+     * find($id)：固定參數 → 參數一定存在，只需檢查參數的內容/類型
+     **/
 
 
     function find($id)
     {
-        $sql = "select * from $this->table ";
+        $sql = "select * from $this->table ";  // 資料表
+        
+        // 如果 $id 是陣列
         if (is_array($id)) {
+
+            //執行內部方法
             $tmp = $this->arraytosql($id);
-            $sql = $sql . " where " . join(" AND ", $tmp);
+
+            //拚接sql語句
+            $sql = $sql . 
+            " where " . join(" AND ", $tmp);
+        
+        // 如果 $id 不是陣列  是其他類型
         } else {
+
+            //拚接sql語句
             $sql .= " WHERE `id`='$id'";
         }
+
         //echo $sql;
+        //將sql句子帶進pdo的query方法中，並以fetch的方式回傳一筆資料結果
         return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     }
 
-    // 4-4 儲存資料：update、insert
-    // $array 要儲存的資料陣列
+/**
+ * 4-4 儲存資料：update、insert
+ *     $array 要儲存的資料陣列
+ *     利用新增和更新語法的特點，整合兩個動作為一個，
+ *     簡化函式的數量並提高函式的通用性
+ *     $arg 必須是陣列，但考量速度，程式中沒有特別檢查是否為陣列
+ **/
+
     function save($array)
     {
+        // 如果 $array 中有 'id' 鍵
         if (isset($array['id'])) {
 
-            //update
-            $sql = "update $this->table set ";
+            // update
+            // 建立更新資料的 SQL 語句 UPDATE `table` SET
+            $sql = " update $this->table set ";
             $tmp = $this->arraytosql($array);
-            $sql .= join(" , ", $tmp) . "where `id`= '{$array['id']}'";
+
+            $sql .= join(" , ", $tmp) . 
+            "where `id`= '{$array['id']}'";
+            
+
+        // 如果 $array 中 沒有 'id' 鍵    
         } else {
 
             //insert
             $cols = join("`,`", array_keys($array));
             $values = join("','", $array);
+            
+            // 建立新增資料的 SQL 語句 insert into
             $sql = "insert into $this->table (`$cols`) values('$values')";
         }
 
