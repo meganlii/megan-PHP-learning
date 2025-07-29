@@ -104,12 +104,13 @@ function to($url)  // 接收一個參數 $url（要跳轉的目標網址）
 class DB
 {
 
-    // 步驟2 宣告屬性/變數
-    // 2-1 建立資料庫基本資料
+    // 步驟2 宣告屬性/變數  
+    // PDO連線的建立方式  
+    // 2-1 建立資料庫基本資料  $dsn  $pdo=new PDO()
     // host => 主機名稱或是位置IP / charset => 使用的字元集，一般選utf8 / dbname => 使用的資料庫名稱
     private $dsn = "mysql:host=localhost;dbname=db09;charset=utf8";
 
-    // 2-2 建立PDO物件連接資料庫
+    // 2-2 建立PDO物件 連線資料庫
     private $pdo;  // 這裡存放另一個物件（PDO物件)
 
     // 2-3 讓每個 DB 物件記住自己要操作哪個資料表！
@@ -138,17 +139,17 @@ class DB
         );
     }
 
-    // 步驟4 自訂函式
-    /** 
-     * 4-1 $table->all()-查詢 符合條件的 "全部資料" select *
-     *     使用 "..." 可變/不定(數量的)參數  三個...
-     *     (...$arg) 可變參數陣列，表示可以接收0個或多個參數
-     *     參數會被包裝成陣列 $arg
-     *     如果有傳入參數$arg[0][1]，則根據參數來修改 SQL 語句
-     *     all();                           // 0個參數 ✓
-     *     all(['name' => 'John']);         // 1個參數 ✓  
-     *     all(['age' => 25], "ORDER BY id"); // 2個參數 ✓
-     **/
+// 步驟4 自訂函式
+/** 
+ * 4-1 $table->all()-查詢 符合條件的 "全部資料" select *
+ *     使用 "..." 可變/不定(數量的)參數  三個...
+ *     (...$arg) 可變參數陣列，表示可以接收0個或多個參數
+ *     參數會被包裝成陣列 $arg
+ *     如果有傳入參數$arg[0][1]，則根據參數來修改 SQL 語句
+ *     all();                           // 0個參數 ✓
+ *     all(['name' => 'John']);         // 1個參數 ✓  
+ *     all(['age' => 25], "ORDER BY id"); // 2個參數 ✓
+ **/
 
 
     // 錄製_2025_06_24_09_36_32_40-1300-步驟3 建立共用函式檔
@@ -168,13 +169,12 @@ class DB
             // 步驟4：is_array() 如果第一個參數是陣列
             if (is_array($arg[0])) {
                 
-                // 步驟2：arraytosql() 將陣列轉換為SQL條件字串
                 $tmp = $this->arraytosql($arg[0]);
+                // 步驟2：arraytosql() 將陣列轉為SQL字串
                 // 簡稱 a2s()
 
                 $sql = $sql . 
                 " where " . join(" AND ", $tmp);
-                
                 // 拚接sql語句
                 // 留意 (點.)運算子  WHERE前後有空格
                 // AND拼接 WHERE 條件字串
@@ -241,8 +241,8 @@ class DB
         */
     }
 
-    // 4-3 查詢 資料筆數 select count(*)
-    // count() SQL內建函式 聚合函式
+// 4-5 查詢 資料筆數 select count(*)
+// count() SQL內建函式 聚合函式
     function count(...$arg)
     {
         $sql = "select count(*) from $this->table ";
@@ -273,20 +273,19 @@ class DB
 
     }
 
-    /**  複製all()，變數改為($id)  刪除isset()
-     * 4-2 $table->find($id)-查詢 符合條件的 "單筆資料" select *
-     *     找某個特定id的資料  回傳資料表指定id的資料 
-     *     find() 函數 - 固定參數  VS 不定參數
-     *     $id 一定存在，因為是必要參數
-     *     只需要檢查 $id 的「類型」，不用檢查「是否存在isset()」
-     *     find();           // ❌ 錯誤！缺少必要參數
-     *     find(1);          // ✓ 正確
-     *     find(['name' => 'John']); // ✓ 正確
-     *     比較
-     * all(...$arg)：不定參數 → 需要用 isset() 檢查參數是否存在
-     * find($id)：固定參數 → 參數一定存在，只需檢查參數的內容/類型
-     **/
-
+/**  複製all()，變數改為($id)  刪除isset()
+ * 4-2 $table->find($id)-查詢 符合條件的 "單筆資料" select *
+ *     找某個特定id的資料  回傳資料表指定id的資料 
+ *     find() 函數 - 固定參數  VS 不定參數
+ *     $id 一定存在，因為是必要參數
+ *     只需要檢查 $id 的「類型」，不用檢查「是否存在isset()」
+ *     find();           // ❌ 錯誤！缺少必要參數
+ *     find(1);          // ✓ 正確
+ *     find(['name' => 'John']); // ✓ 正確
+ *     比較
+ * all(...$arg)：不定參數 → 需要用 isset() 檢查參數是否存在
+ * find($id)：固定參數 → 參數一定存在，只需檢查參數的內容/類型
+ **/
 
     function find($id)
     {
@@ -295,7 +294,8 @@ class DB
         // 如果 $id 是陣列
         if (is_array($id)) {
 
-            //執行內部方法
+            //執行內部方法4-6 a2s()
+            // 將陣列轉換為字串
             $tmp = $this->arraytosql($id);
 
             //拚接sql語句
@@ -314,7 +314,7 @@ class DB
         return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     }
 
-/**
+/**先寫出update、insert 兩個部分
  * 4-4 儲存資料：update、insert
  *     $array 要儲存的資料陣列
  *     利用新增和更新語法的特點，整合兩個動作為一個，
@@ -322,37 +322,48 @@ class DB
  *     $arg 必須是陣列，但考量速度，程式中沒有特別檢查是否為陣列
  **/
 
-    // {$array['id']}看不懂???
     function save($array)
     {
+        // 先判斷有沒有id 決定 新增 或 更新
         // 如果 $array 中有 'id' 鍵
         if (isset($array['id'])) {
 
-            // update
+            // update set
             // 建立更新資料的 SQL 語句 UPDATE `table` SET
             $sql = " update $this->table set ";
+
+            // 將陣列轉換為字串
             $tmp = $this->arraytosql($array);
 
+            // 拚接 SQL 語句
+            // join()位置不同
             $sql .= join(" , ", $tmp) . 
-            "where `id`= '{$array['id']}'";
+            " where `id`= '{$array['id']}' ";
             
 
         // 如果 $array 中 沒有 'id' 鍵    
         } else {
 
-            //insert
+            //insert into
             $cols = join("`,`", array_keys($array));
+            // 將陣列的鍵名轉換為字串，並用逗號分隔
+            // 例如：array_keys(['name' => 'John', 'age' => 25])
+            // 輸出：name(`,`)age`,`age
+            // 之後加上 前後引號(`$cols`) 就完美了
+
             $values = join("','", $array);
             
-            // 建立新增資料的 SQL 語句 insert into
+            // 建立新增資料的 SQL 語句 insert into表/欄位/值
             $sql = "insert into $this->table (`$cols`) values('$values')";
         }
 
         return $this->pdo->exec($sql);
     }
 
-    // 複製find()
-    // 4-5 刪除資料
+
+/** 複製find()
+ *  4-3 刪除資料
+ **/
     function del($id)
     {
         $sql = "delete  from $this->table ";
@@ -365,11 +376,17 @@ class DB
         }
         //echo $sql;
         return $this->pdo->exec($sql);
-        // 查詢query($sql) 改成 執行exec() SQL 語句
     }
+        // 查詢query($sql) 改成 執行exec($sql) 後面刪除fetch()
+        // 執行sql語句，但不返回資料，而是返回影響的資料筆數，適合使用在"新增，更新"或"刪除"資料時
 
-    // 4-6 將 陣列 轉換為 SQL條件字串
-    // 簡稱 a2s()
+// 4-6 簡稱 a2s()將陣列轉換為SQL字串 
+    // 將陣列轉換為 SQL 條件字串
+    // 例如：arraytosql(['id' => 1, 'name' => 'John'])
+    // 輸出：['`id` = \'1\'', '`name` = \'John\'']
+    // 用於生成 SQL 查詢條件
+    // 這個函式會被 all()、find()、save() 和 del() 使用
+
     private function arraytosql($array)
     {
         // 步驟2：初始化一個空陣列 $tmp
