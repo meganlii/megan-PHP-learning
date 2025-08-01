@@ -93,6 +93,9 @@ $data: 欲新增的資料陣列 (array)
 function insert($table,$data){
     global $pdo;
     $keys=array_keys($data);
+    // 將鍵名轉換為字串
+    // 例如：array_keys(['name' => 'John', 'age' => 25])
+    // 輸出：name,age
 
     $sql="INSERT INTO $table (`".join("`,`",$keys)."`) values('".join("','",$data)."');";
     echo $sql;
