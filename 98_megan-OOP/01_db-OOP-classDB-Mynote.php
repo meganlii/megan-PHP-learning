@@ -44,7 +44,10 @@ date_default_timezone_set("Asia/Taipei");
 /* 共用函式目的
 1. 簡化CRUD動作、除錯過程
 2. 減少撰寫SQL錯誤
-3. include到所有的頁面去使用
+3. include到所有的頁面去使用 方便維護和重用
+4. 放到最上/外層的頁面 放backend.php(後台) 寫一次即可 不用寫好幾次
+後台會載入其他檔案(如backend\title.php) 都會共用到 
+使用include_once 因為有用session
 */
 
 /* 撰寫輔助用的全域函式：輔助函式
@@ -54,21 +57,41 @@ date_default_timezone_set("Asia/Taipei");
 */
 
 
-function dd($array)   // 陣列除錯用/測試用，格式化輸出內容，方便開發時檢查資料
+function dd($array)   
+// 陣列除錯用/測試用，格式化輸出內容，方便開發時檢查資料
 {
     echo "<pre>";     // 格式化輸出
     print_r($array);  // print_r() 以易讀 保持格式化結構 輸出變數的結構和內容
     echo "</pre>";    // 關閉格式化輸出
 }
 
-function q($sql)   // 複雜SQL語法的簡化函式
-// classDB函式處理不了 解決聯表查詢或是子查詢
-// 只有題組三會用到 直接執行SQL語句，並返回結果 不會用到class DB
 
+function q($sql)   
+// 複雜SQL語法的簡化函式
 {
     $dsn = 'mysql:host=localhost;dbname=db09;charset=utf8';
     $pdo = new PDO($dsn, 'root', '');
     return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+}
+// classDB函式處理不了 解決聯表查詢或是子查詢 執行複雜 SQL 查詢
+// 只有題組三會用到 直接執行SQL語句，並返回結果 不會用到class DB
+/**
+<?php
+$movies = q("select `movie` from `orders` group by `movie`");
+foreach($movies as $movie){
+    echo "<option value='{$movie['movie']}'>{$movie['movie']}</option>";
+}
+?>
+**/
+
+
+function to($url)  
+// 接收一個參數 $url（要跳轉的目標網址）
+{
+    header("location:" . $url);
+    // header() 函數發送 HTTP 標頭Location
+    // 標頭Location 會告訴瀏覽器跳轉到指定的網址
+    // . $url 將參數中的網址串接到 "location:" 後面
 }
 
 /* 頁面導(定)向輔助函式：PHP檔頭管理指令-header()
@@ -84,15 +107,10 @@ function q($sql)   // 複雜SQL語法的簡化函式
         // 處理表單...
         to("success.php");
     }
-5. 不用前後端跳頁
+5. 不用前後端一直跳頁
 */
-function to($url)  // 接收一個參數 $url（要跳轉的目標網址）
-{
-    header("location:" . $url);
-    // header() 函數發送 HTTP 標頭Location
-    // 標頭Location 會告訴瀏覽器跳轉到指定的網址
-    // . $url 將參數中的網址串接到 "location:" 後面
-}
+
+
 
 /* 簡化自訂函式
 1. 用物件導向的方式 簡化自訂函式的撰寫
@@ -428,12 +446,13 @@ class DB
 /** 
  * 使用 new語法 建立一個DB連線物件，並將這個物件指定給一個變數$DB
  * 變數$DB(大寫開頭) = new DB('資料表名稱');
+ * 資料表名稱 用複數較理想 ['titles'] 
  * 建立一個專門處理 [ title 資料表] 的 [ 物件 $Title ]
  * $Title 物件變數  ['title'] 數值/參數
  * 用法 $title = $Title->find(1);
  **/
 
-$Title = new DB('title');
+$Title = new DB('title');  //用複數較理想 ['titles'] 
 $Ad = new DB('ad');
 $Mvim = new DB('mvim');
 $Image = new DB('image');
