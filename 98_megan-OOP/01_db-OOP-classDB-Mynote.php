@@ -1,9 +1,17 @@
 <?php
-// 1.[技能檢定]網頁乙級檢定-前置作業-程式功能整合測試-基礎
-// https://mackliu.github.io/php-book/2024/01/03/skill-check1-init-04/
+// 搭配講義註解
+/* 
+1.[技能檢定]網頁乙級檢定-前置作業-程式功能整合測試-基礎
+https://mackliu.github.io/php-book/2024/01/03/skill-check1-init-04/
 
-// 老師題組一解題說明
-// https://bquiz.mackliu.com/solve/solve01-02.html
+2.[資料庫] Lesson 3 SQL 語法
+https://mackliu.github.io/php-book/2021/09/20/db-lesson-03/
+
+3.老師題組一解題說明
+https://bquiz.mackliu.com/solve/solve01-02.html
+
+*/
+
 
 // 總共2+3+6+1 = 12個函式
 /**
@@ -19,16 +27,6 @@
  *    if(!isset($_SESSION['visit'])){...}
  **/
 
-
-/* 搭配講義註解
-1.[技能檢定]網頁乙級檢定-前置作業-程式功能整合測試-基礎
-https://mackliu.github.io/php-book/2024/01/03/skill-check1-init-04/
-
-2. [資料庫] Lesson 3 SQL 語法
-https://mackliu.github.io/php-book/2021/09/20/db-lesson-03/
-
-3. 
-*/
 
 
 session_start();
