@@ -75,14 +75,13 @@ function q($sql)
 }
 // classDB函式處理不了 解決聯表查詢或是子查詢 執行複雜 SQL 查詢
 // 只有題組三會用到 直接執行SQL語句，並返回結果 不會用到class DB
-/**
-<?php
-$movies = q("select `movie` from `orders` group by `movie`");
-foreach($movies as $movie){
-    echo "<option value='{$movie['movie']}'>{$movie['movie']}</option>";
-}
-?>
-**/
+
+
+// $movies = q("select `movie` from `orders` group by `movie`");
+// foreach($movies as $movie){
+//     echo "<option value='{$movie['movie']}'>{$movie['movie']}</option>";
+// }
+
 
 
 function to($url)  
