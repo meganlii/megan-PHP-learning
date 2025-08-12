@@ -1,8 +1,6 @@
 <?php
-// 從 撰寫輔助用的全域函式  開始看
 // 1.[技能檢定]網頁乙級檢定-前置作業-程式功能整合測試-基礎
 // https://mackliu.github.io/php-book/2024/01/03/skill-check1-init-04/
-
 
 // 老師題組一解題說明
 // https://bquiz.mackliu.com/solve/solve01-02.html
@@ -50,12 +48,12 @@ date_default_timezone_set("Asia/Taipei");
 使用include_once 因為有用session
 */
 
-/* 撰寫輔助用的全域函式：輔助函式
+// 二、撰寫輔助用的全域函式：輔助函式
+/* 
 1. 共 dd  q  to 三組函式： 除錯 資料庫 跳轉
 2. 宣告在共用的引入檔中，做為全域隨時可以呼叫的工具函式
 3. 不用放到類別中，獨立在 DB 類別之外
 */
-
 
 function dd($array)   
 // 陣列除錯用/測試用，格式化輸出內容，方便開發時檢查資料
@@ -64,7 +62,6 @@ function dd($array)
     print_r($array);  // print_r() 以易讀 保持格式化結構 輸出變數的結構和內容
     echo "</pre>";    // 關閉格式化輸出
 }
-
 
 function q($sql)   
 // 複雜SQL語法的簡化函式
@@ -76,12 +73,10 @@ function q($sql)
 // classDB函式處理不了 解決聯表查詢或是子查詢 執行複雜 SQL 查詢
 // 只有題組三會用到 直接執行SQL語句，並返回結果 不會用到class DB
 
-
 // $movies = q("select `movie` from `orders` group by `movie`");
 // foreach($movies as $movie){
 //     echo "<option value='{$movie['movie']}'>{$movie['movie']}</option>";
 // }
-
 
 
 function to($url)  
