@@ -12,21 +12,32 @@ https://bquiz.mackliu.com/solve/solve01-02.html
 
 */
 
-
 // 總共2+3+6+1 = 12個函式
 /**
  * 記憶技巧 寫完時間 老師15分 同學25分 
- *  1.先寫全域函式 *2 + *3
- *  2.再寫DB類別  *6
- *  3.寫FN( )，先寫名稱與變數  例 function all(...$arg)
+ *  1.先寫全域函式 *2 + *3  再寫DB類別  *6
+
+ *  2.寫FN name( ){ }，先寫名稱/小大括號/變數  例 function all(...$arg)
  *    all//find(查R) count  save(增C.改U)//del(刪D)  
  *    arraytosql
- *  4.再寫new DB('table') 物件
+
+ *  3.再寫new DB('table') 物件
  *    $Title = new DB('title');
- *  5.最後寫訪客計數器
+
+ *  4.最後寫訪客計數器
  *    if(!isset($_SESSION['visit'])){...}
  **/
 
+
+// 一、共用函式目的
+/* 
+1. 簡化CRUD動作、除錯過程
+2. 減少撰寫SQL錯誤
+3. include到所有的頁面去使用 方便維護和重用
+4. 放到最上/外層的頁面 放backend.php(後台) 寫一次即可 不用寫好幾次
+後台會載入其他檔案(如backend\title.php) 都會共用到 
+使用include_once 因為有用session
+*/
 
 
 session_start();
@@ -36,15 +47,6 @@ session_start();
 
 date_default_timezone_set("Asia/Taipei");
 // 設定預設時區為台北，避免時間錯誤
-
-/* 共用函式目的
-1. 簡化CRUD動作、除錯過程
-2. 減少撰寫SQL錯誤
-3. include到所有的頁面去使用 方便維護和重用
-4. 放到最上/外層的頁面 放backend.php(後台) 寫一次即可 不用寫好幾次
-後台會載入其他檔案(如backend\title.php) 都會共用到 
-使用include_once 因為有用session
-*/
 
 // 二、撰寫輔助用的全域函式：輔助函式
 /* 
