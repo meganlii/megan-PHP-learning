@@ -9,34 +9,32 @@ https://mackliu.github.io/php-book/2021/09/20/db-lesson-03/
 
 3.老師題組一解題說明
 https://bquiz.mackliu.com/solve/solve01-02.html
-
 */
 
 // 總共2+3+6+1 = 12個函式
-/**
- * 記憶技巧 寫完時間 老師15分 同學25分 
- *  1.先寫全域函式 *2 + *3  再寫DB類別  *6
+// 記憶技巧 先列出全部函式 寫完時間 老師15分 同學25分
+/*
+1.全域函式 *2 + *3  再寫DB類別  *6
 
- *  2.寫FN name( ){ }，先寫名稱/小大括號/變數  例 function all(...$arg)
- *    all//find(查R) count  save(增C.改U)//del(刪D)  
- *    arraytosql
+2.寫FN name( ){ }，先寫名稱/小大括號/變數  例 function all(...$arg)
+all//find(查R) count  save(增C.改U)//del(刪D)  arraytosql
 
- *  3.再寫new DB('table') 物件
- *    $Title = new DB('title');
+3.再寫new DB('table') 物件
+$Title = new DB('title');
 
- *  4.最後寫訪客計數器
- *    if(!isset($_SESSION['visit'])){...}
- **/
+4.最後寫訪客計數器
+if(!isset($_SESSION['visit'])){...}
+*/
 
 
 // 一、共用函式目的
 /* 
-1. 簡化CRUD動作、除錯過程
-2. 減少撰寫SQL錯誤
-3. include到所有的頁面去使用 方便維護和重用
-4. 放到最上/外層的頁面 放backend.php(後台) 寫一次即可 不用寫好幾次
-後台會載入其他檔案(如backend\title.php) 都會共用到 
-使用include_once 因為有用session
+* 簡化 CRUD動作、除錯過程
+* 減少 撰寫SQL錯誤
+* include 到所有的頁面去使用 方便維護和重用
+* 放到最上/外層的頁面 放backend.php(後台) 寫一次即可 不用寫好幾次
+* 後台會載入其他檔案(如backend\title.php) 都會共用到 
+* 使用include_once 因為有用session
 */
 
 
@@ -50,13 +48,13 @@ date_default_timezone_set("Asia/Taipei");
 
 // 二、撰寫輔助用的全域函式：輔助函式
 /* 
-1. 共 dd  q  to 三組函式： 除錯 資料庫 跳轉
+1. 共 dd  q  to 三組函式： 除錯 / 資料庫 / 跳轉
 2. 宣告在共用的引入檔中，做為全域隨時可以呼叫的工具函式
 3. 不用放到類別中，獨立在 DB 類別之外
 */
 
-// 陣列除錯用/測試用，格式化輸出內容，方便開發時檢查資料
-function dd($array)   
+// 陣列除錯用/測試用輔助函數，格式化輸出內容，方便開發時檢查資料
+function dd($array)
 {
     echo "<pre>";     // 格式化輸出
     print_r($array);  // print_r() 以易讀 保持格式化結構 輸出變數的結構和內容
@@ -70,23 +68,56 @@ function dd($array)
 // 資料庫設定資料：資料庫位置和名稱
 // 使用者名稱
 // 密碼（空白
-function q($sql)   
+function q($sql)
 {
     $dsn = 'mysql:host=localhost;dbname=db09;charset=utf8';
-    $pdo = new PDO($dsn, 'root', '');  
+    $pdo = new PDO($dsn, 'root', '');
     return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
-// classDB函式處理不了 解決聯表查詢或是子查詢 執行複雜 SQL 查詢
-// 只有題組三會用到 直接執行SQL語句，並返回結果 不會用到class DB
 
-// $movies = q("select `movie` from `orders` group by `movie`");
-// foreach($movies as $movie){
-//     echo "<option value='{$movie['movie']}'>{$movie['movie']}</option>";
-// }
+// classDB函式處理不了 解決聯表查詢或是子查詢 執行複雜 SQL 查詢
+/*
+只有題組三會用到 直接執行SQL語句，並返回結果 不會用到class DB
+$movies = q("select `movie` from `orders` group by `movie`");
+foreach($movies as $movie){
+    echo "<option value='{$movie['movie']}'>{$movie['movie']}</option>";
+}
+*/
+
+
+// 將sql句子帶進pdo的query方法中，並以fetchAll()方式回傳所有的結果
+/*
+執行 SQL 查詢並返回結果
+fetchAll(PDO::FETCH_ASSOC) 取得所有結果，並以關聯陣列形式返回資料
+PDO::FETCH_ASSOC 只返回 關聯陣列(二維)key=value，不返回數字索引
+自訂函式用 return 回傳資料
+共三組參數 pdo  // query($sql) 執行SQL查詢  // fetchAll(PDO::FETCH_ASSOC)取回全部關聯陣列
+*/
+
+// 回傳值 fetchAll()
+/*
+參考 https://mackliu.github.io/php-book/2021/09/21/php-lesson-04/
+PDO:: PHP範圍解析運算符，用雙冒號 :: 表示
+存取 類別常數：存取 PDO 類別中定義的常數
+存取 PDO類別 的 FETCH_ASSOC 常數
+::「進入」一個類別，存取內部的靜態內容（常數、靜態方法、靜態屬性）的符號
+*/
+
+// PDO 類別常數
+/*
+PDO::FETCH_ASSOC  回傳 帶欄位 名稱的資料
+關聯陣列 ['name' => 'John', 'age' => 25]
+
+PDO::FETCH_NUM    回傳 帶欄位 索引的資料
+索引陣列 [0 => 'John', 1 => 25]
+*/
+
+// 錄製_2025_06_24_09_36_32_40-1300-步驟3 建立共用函式檔
+// 對照OOP-db.php FN all()寫法
 
 
 // 接收一個參數 $url（要跳轉的目標網址）
-function to($url)  
+function to($url)
 {
     header("location:" . $url);
     // header() 函數發送 HTTP 標頭Location
@@ -144,38 +175,38 @@ class DB
     function __construct($table)
     {
         $this->table = $table;  // $this替換資料表名稱 帶參數的概念
-        $this->pdo = new PDO($this->dsn,'root','');
+        $this->pdo = new PDO($this->dsn, 'root', '');
     }
 
     // 3-1 使用 [$this->屬性名稱(不用$)]  存取 物件的屬性(變數)
-    
-    // 3-2 $this->dsn = $dsn = "mysql:host=localhost;dbname=db09;charset=utf8"
-    // PHP 內建類別PDO 不需要自己宣告
-    // 同時建立另一個PDO物件(內部建立的PDO物件)，存放在$this->pdo屬性中
-    // 物件包含物件的概念 建構子 之下有兩個$this
-    
 
-    // 錄製_2025_06_24_09_36_32_40-1300-步驟3 建立共用函式檔
-    // 對照OOP-db.php FN all()寫法
+    // 3-2 $this->dsn = $dsn = "mysql:host=localhost;dbname=db09;charset=utf8"
+    /*
+    PHP 內建類別PDO 不需要自己宣告
+    同時建立另一個PDO物件(內部建立的PDO物件)，存放在$this->pdo屬性中
+    物件包含物件的概念 建構子 之下有兩個$this
+    */
+
 
     // 步驟4 自訂函式
-    /** 
-     * 4-1 $table->all()-查詢 符合條件的 "全部資料" select *
-     *     使用 "..." 可變/不定(數量的)參數  三個點點點...
-     *     (...$arg) 不定參數陣列，表示可以接收0個或多個參數
-     *     參數 會被包裝成陣列 $arg
-     *     如果有傳入參數$arg[0][1]，則根據參數來修改 SQL 語句
-     *     all();                             // 0個參數 ✓
-     *     all(['name' => 'John']);           // 1個參數 ✓  
-     *     all(['age' => 25], "ORDER BY id"); // 2個參數 ✓
-     **/
+    // 4-1 $table->all()-查詢 符合條件的 "全部資料" select *
+    // 五組變數 $sql  三個if  return
+    /*
+    * 使用 "..." 可變/不定(數量的)參數  三個點點點...
+    * (...$arg) 不定參數陣列，表示可以接收0個或多個參數
+    * 參數 會被包裝成陣列 $arg
+    * 如果有傳入參數$arg[0][1]，則根據參數來修改 SQL 語句
+    * all();                             // 0個參數 ✓
+    * all(['name' => 'John']);           // 1個參數 ✓  
+    * all(['age' => 25], "ORDER BY id"); // 2個參數 ✓
+    */
     function all(...$arg)
     {
         // 步驟1：建立查詢語句
-        $sql = "select * from $this->table";
         // 查詢 基本語句，選取資料表所有欄位
         // $this->table = 資料表名稱  'title'
         // 輸出 $sql = "select * from title"
+        $sql = "select * from $this->table";
 
         // 步驟3：處理第一個參數
         // isset()  檢查是否成立 有傳入資料
@@ -184,9 +215,9 @@ class DB
             // 步驟4：is_array() 如果有資料 且 第一個參數是陣列
             if (is_array($arg[0])) {
 
-                $tmp = $this->arraytosql($arg[0]);
                 // 步驟2：arraytosql() 將陣列 轉為SQL字串
                 // 簡稱 a2s()
+                $tmp = $this->arraytosql($arg[0]);
 
                 $sql = $sql . " where " . join(" AND ", $tmp);
                 // 拚接sql語句
@@ -209,26 +240,26 @@ class DB
                 // 如果第一個參數不是陣列，則直接附加到SQL語句後
             } else {
                 $sql .= $arg[0];
-                // 將原本的 $sql 變數內容保留，準備在後面加上新內容
-                // 等同 $sql .= " where id=1"
-                // 例如 $sql = "select * from title
-                // 程式假設使用者傳入的是完整的 SQL 片段，不用再加"where" ~ 看不懂@@
-
+                // $sql = $sql . $arg[0];
+                // 將原本 $sql 變數內容保留，並在後面 加上新內容
+                // 例如 $sql .= " where id=1"
+                // $sql = "select * from title where `id`='1'
+                // 程式假設使用者傳入完整 SQL 片段，不用再加"where"
             }
         }
-// .= 是一個 複合賦值運算符
 
-/**
-結合了 字串串接 (string concatenation) 和 賦值 (assignment) 的功能 
-它的作用是將右邊的值附加到左邊變數的值之後，然後將結果賦值給左邊的變數
-$variable .= $value 等同於 $variable = $variable . $value。
-= 是一個賦值運算符，用於將一個值賦給一個變數。
-. 是一個字串串接運算符，用於將兩個字串連接在一起。
-$variable .= $value 先將 $variable 的值與 $value 的值串接，然後將結果存回 $variable，相當於在原來的字串後面加上新的內容。 
-**/
+        // .= 是一個 複合-賦值-運算符：相當在原來的字串後面加上新的內容
+        /**
+        * $variable .= $value 等同於 $variable = $variable . $value。
+        * 結合了 字串串接 (string concatenation) 和 賦值 (assignment) 的功能 
+        * "=" 賦值 運算符，用於將一個值賦給一個變數。
+        * "." 字串串接 運算符，用於將兩個字串連接在一起。
+        * 將右邊的值附加到左邊變數的值之後，然後將結果賦值給左邊的變數
+        * $variable .= $value 先將 $variable 的值與 $value 的值串接，然後將結果存回 $variable
+        **/
 
         // 步驟5：處理第二個參數
-        // 如果有第二個參數，則附加到SQL語句where之後
+        // 如果有第二個參數，則附加到SQL語句 where之後
         // 例如：$sql .= " order by id desc"
         // 第二參數 可為條件句-兩者之間BETWEEN  特殊指定IN 
         // 或 限制句 如 排序ORDER BY 或 限制筆數LIMIT
@@ -239,30 +270,9 @@ $variable .= $value 先將 $variable 的值與 $value 的值串接，然後將�
             $sql .= $arg[1];
         }
 
-        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);  // 取回全部 關聯陣列
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        // 共三組參數 $this->pdo // query($sql) 執行 SQL 查詢  // fetchAll(PDO::FETCH_ASSOC)取回全部關聯陣列
 
-        // 將sql句子帶進pdo的query方法中，並以fetchAll()方式回傳所有的結果
-        // 執行 SQL 查詢並返回結果
-        // fetchAll(PDO::FETCH_ASSOC) 取得所有結果，並以關聯陣列形式返回資料
-        // PDO::FETCH_ASSOC 只返回關聯陣列(二維)，不返回數字索引
-        // 自訂函式用 return 回傳資料
-        // 共三組參數 $this->pdo  // query($sql) 執行 SQL 查詢  // fetchAll(PDO::FETCH_ASSOC)
-
-        /* 回傳值 fetchAll()
-        參考 https://mackliu.github.io/php-book/2021/09/21/php-lesson-04/
-        PDO:: PHP 中的範圍解析運算符，用雙冒號 :: 表示
-        存取類別常數：存取 PDO 類別中定義的常數
-        存取 PDO 類別中的 FETCH_ASSOC 常數
-        :: 就是用來「進入」一個類別，存取它內部的靜態內容（常數、靜態方法、靜態屬性）的符號。
-        */
-
-        /* PDO 常用常數
-        PDO::FETCH_ASSOC  回傳 帶欄位名稱的資料
-        // 關聯陣列 ['name' => 'John', 'age' => 25]
-        
-        PDO::FETCH_NUM    回傳 帶欄位索引的資料
-        // 索引陣列 [0 => 'John', 1 => 25]
-        */
     }
 
     // 4-5 查詢 資料筆數 select count(*)
@@ -297,20 +307,20 @@ $variable .= $value 先將 $variable 的值與 $value 的值串接，然後將�
 
     }
 
-    /**  複製all()，變數改為($id)  刪除isset()
-     * 4-2 $table->find($id)-查詢 符合條件的 "單筆資料" select *
-     *     找某個特定id的資料  回傳資料表指定id的資料 
-     *     find() 函數 - 固定參數  VS 不定參數
-     *     $id 一定存在，因為是必要參數
-     *     只需要檢查 $id 的「類型」，不用檢查「是否存在isset()」
-     *     find();           // ❌ 錯誤！缺少必要參數
-     *     find(1);          // ✓ 正確
-     *     find(['name' => 'John']); // ✓ 正確
-     *     比較
-     * all(...$arg)：不定參數 → 需要用 isset() 檢查參數是否存在
-     * find($id)：固定參數 → 參數一定存在，只需檢查參數的內容/類型
-     **/
-
+    // 4-2 $table->find($id)-查詢 符合條件的 "單筆資料" select *
+    // 複製all()，變數改為($id)  刪除isset()
+    /*
+    * 找某個特定id的資料  回傳資料表指定id的資料 
+    * find() 函數 - 固定參數  VS 不定參數
+    * $id 一定存在，因為是必要參數
+    * 只需要檢查 $id「類型」，不用檢查「是否存在isset()」
+    * find();           // ❌ 錯誤！缺少必要參數
+    * find(1);          // ✓ 正確
+    * find(['name' => 'John']); // ✓ 正確
+    * 比較
+    * all(...$arg)：不定參數 → 需要用 isset() 檢查參數是否存在
+    * find($id)：固定參數 → 參數一定存在，只需檢查參數的內容/類型
+    */
     function find($id)
     {
         $sql = "select * from $this->table ";  // 資料表
@@ -338,13 +348,14 @@ $variable .= $value 先將 $variable 的值與 $value 的值串接，然後將�
         return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**先寫出update、insert 兩個部分
-     * 4-4 儲存資料：update、insert
-     *     $array 要儲存的資料陣列
-     *     利用新增和更新語法的特點，整合兩個動作為一個，
-     *     簡化函式的數量並提高函式的通用性
-     *     $arg 必須是陣列，但考量速度，程式中沒有特別檢查是否為陣列
-     **/
+    // 4-4 儲存資料：update、insert
+    // 先寫出update、insert 兩個部分
+    /*
+    * $array 要儲存的資料陣列
+    * 利用新增和更新語法的特點，整合兩個動作為一個，
+    * 簡化函式的數量並提高函式的通用性
+    * $arg 必須是陣列，但考量速度，程式中沒有特別檢查是否為陣列
+    */
 
     function save($array)
     {
@@ -352,23 +363,21 @@ $variable .= $value 先將 $variable 的值與 $value 的值串接，然後將�
         // 如果 $array 中有 'id' 鍵
         if (isset($array['id'])) {
 
-            // update set
+            // 步驟1 update set
             // 建立更新資料的 SQL 語句 UPDATE `table` SET
             $sql = " update $this->table set ";
 
-            // 將陣列轉換為字串
-            $tmp = $this->arraytosql($array);
+            $tmp = $this->arraytosql($array);  // 將陣列轉換為字串
 
             // 拚接 SQL 語句
             // join()位置不同
             $sql .= join(" , ", $tmp) .
                 " where `id`= '{$array['id']}' ";
 
-
             // 如果 $array 中 沒有 'id' 鍵    
         } else {
 
-            //insert into
+            // 步驟2 insert into
             $cols = join("`,`", array_keys($array));
             // $cols 取得 欄位名稱
             // array_keys()
@@ -393,7 +402,7 @@ $variable .= $value 先將 $variable 的值與 $value 的值串接，然後將�
             // [1] => age
             // )
 
-            // 建立新增資料的 SQL 語句 insert into表/欄位/值
+            // 建立新增資料SQL語句 insert into 表/欄位/值
             $sql = "insert into $this->table (`$cols`) values('$values')";
         }
 
@@ -401,9 +410,8 @@ $variable .= $value 先將 $variable 的值與 $value 的值串接，然後將�
     }
 
 
-    /** 複製find()
-     *  4-3 刪除資料
-     **/
+    // 4-3 刪除資料
+    // 複製find()
     function del($id)
     {
         $sql = "delete  from $this->table ";
