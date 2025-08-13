@@ -55,19 +55,25 @@ date_default_timezone_set("Asia/Taipei");
 3. 不用放到類別中，獨立在 DB 類別之外
 */
 
-function dd($array)   
 // 陣列除錯用/測試用，格式化輸出內容，方便開發時檢查資料
+function dd($array)   
 {
     echo "<pre>";     // 格式化輸出
     print_r($array);  // print_r() 以易讀 保持格式化結構 輸出變數的結構和內容
     echo "</pre>";    // 關閉格式化輸出
 }
 
-function q($sql)   
 // 複雜SQL語法的簡化函式
+//DSN 資料來源/連線名稱 (Data Source Name)
+//PDO (PHP Data Objects)
+// PDO也是一個物件
+// 資料庫設定資料：資料庫位置和名稱
+// 使用者名稱
+// 密碼（空白
+function q($sql)   
 {
     $dsn = 'mysql:host=localhost;dbname=db09;charset=utf8';
-    $pdo = new PDO($dsn, 'root', '');
+    $pdo = new PDO($dsn, 'root', '');  
     return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
 // classDB函式處理不了 解決聯表查詢或是子查詢 執行複雜 SQL 查詢
@@ -79,12 +85,12 @@ function q($sql)
 // }
 
 
-function to($url)  
 // 接收一個參數 $url（要跳轉的目標網址）
+function to($url)  
 {
     header("location:" . $url);
     // header() 函數發送 HTTP 標頭Location
-    // 標頭Location 會告訴瀏覽器跳轉到指定的網址
+    // 標頭Location 會告訴瀏覽器 跳轉到指定的網址
     // . $url 將參數中的網址串接到 "location:" 後面
 }
 
@@ -92,24 +98,21 @@ function to($url)
 1. 重新導向/跳轉 到指定網址 可為內部首頁、外部網址、相對路徑
 2. 跳轉時帶參數 to("profile.php?id=123");
 3. 跳轉到首頁 to("index.php") 
-    伺服器發送 HTTP 標頭：Location: login.php
-    瀏覽器接收到這個標頭
-    瀏覽器自動跳轉到 login.php
-4. 常見使用情境
+    伺服器 發送 HTTP 標頭：Location: login.php
+    瀏覽器 接收標頭
+    瀏覽器 自動跳轉到 login.php
+4. 常見使用情境 不用前後端一直跳頁
     // 表單提交後跳轉
     if($_POST['submit']) {
         // 處理表單...
         to("success.php");
     }
-5. 不用前後端一直跳頁
 */
-
-
 
 /* 簡化自訂函式
 1. 用物件導向的方式 簡化自訂函式的撰寫
 2. 考量檢定時間限制，並不是全面採用OOP
-3. 只是把常用的自訂函式，包裝成一個工具類別(Class)
+3. 只是把常用的自訂函式，包裝成一個 資料庫DB類別(Class DB)
 */
 
 /* 資料庫操作類別 (Database Access Object, DAO) 
@@ -134,47 +137,42 @@ class DB
     private $table;  // $this->table = 資料表名稱
 
 
-    // 步驟3 建構函式
-    // 建立建構式，在建構時帶入table名稱會建立資料庫的連線
-    // 建構函式：當建立物件時自動執行
-    // 建構式為物件被實例化(new DB)時會先執行的方法
+    // 步驟3 建構函式/建構子
+    // 在建構時帶入 table資料表名稱時 會建立資料庫的連線
+    // 建立物件時 自動執行
+    // 物件被實例化(new DB)時 會先執行的方法
     function __construct($table)
     {
-
-        // 3-1 使用 [$this->屬性名稱(不用$)]  存取 物件的屬性(變數) 
-        $this->table = $table;  // $this 替換 資料表名稱 帶參數的概念
-
-
-        // 3-2 $this->dsn = $dsn = "mysql:host=localhost;dbname=db09;charset=utf8"
-        // PHP 內建類別PDO 不需要自己宣告
-        // 同時建立另一個PDO物件(內部建立的PDO物件)，存放在$this->pdo屬性中
-        // 物件包含物件的概念 建構子下有兩個$this
-        $this->pdo = new PDO(  // PDO也是一個物件
-            $this->dsn,  // 資料庫的設定資料：資料庫位置和名稱
-            "root",      // 使用者名稱
-            ''           // 密碼（空白）
-        );
+        $this->table = $table;  // $this替換資料表名稱 帶參數的概念
+        $this->pdo = new PDO($this->dsn,'root','');
     }
+
+    // 3-1 使用 [$this->屬性名稱(不用$)]  存取 物件的屬性(變數)
+    
+    // 3-2 $this->dsn = $dsn = "mysql:host=localhost;dbname=db09;charset=utf8"
+    // PHP 內建類別PDO 不需要自己宣告
+    // 同時建立另一個PDO物件(內部建立的PDO物件)，存放在$this->pdo屬性中
+    // 物件包含物件的概念 建構子 之下有兩個$this
+    
+
+    // 錄製_2025_06_24_09_36_32_40-1300-步驟3 建立共用函式檔
+    // 對照OOP-db.php FN all()寫法
 
     // 步驟4 自訂函式
     /** 
      * 4-1 $table->all()-查詢 符合條件的 "全部資料" select *
-     *     使用 "..." 可變/不定(數量的)參數  三個...
-     *     (...$arg) 可變參數陣列，表示可以接收0個或多個參數
-     *     參數會被包裝成陣列 $arg
+     *     使用 "..." 可變/不定(數量的)參數  三個點點點...
+     *     (...$arg) 不定參數陣列，表示可以接收0個或多個參數
+     *     參數 會被包裝成陣列 $arg
      *     如果有傳入參數$arg[0][1]，則根據參數來修改 SQL 語句
-     *     all();                           // 0個參數 ✓
-     *     all(['name' => 'John']);         // 1個參數 ✓  
+     *     all();                             // 0個參數 ✓
+     *     all(['name' => 'John']);           // 1個參數 ✓  
      *     all(['age' => 25], "ORDER BY id"); // 2個參數 ✓
      **/
-
-
-    // 錄製_2025_06_24_09_36_32_40-1300-步驟3 建立共用函式檔
-    // 對照OOP-db.php FN all()寫法
     function all(...$arg)
     {
         // 步驟1：建立查詢語句
-        $sql = "select * from $this->table "; // table後面空一格
+        $sql = "select * from $this->table";
         // 查詢 基本語句，選取資料表所有欄位
         // $this->table = 資料表名稱  'title'
         // 輸出 $sql = "select * from title"
@@ -183,25 +181,24 @@ class DB
         // isset()  檢查是否成立 有傳入資料
         if (isset($arg[0])) {
 
-            // 步驟4：is_array() 如果第一個參數是陣列
+            // 步驟4：is_array() 如果有資料 且 第一個參數是陣列
             if (is_array($arg[0])) {
 
                 $tmp = $this->arraytosql($arg[0]);
-                // 步驟2：arraytosql() 將陣列轉為SQL字串
+                // 步驟2：arraytosql() 將陣列 轉為SQL字串
                 // 簡稱 a2s()
 
-                $sql = $sql .
-                    " where " . join(" AND ", $tmp);
+                $sql = $sql . " where " . join(" AND ", $tmp);
                 // 拚接sql語句
                 // 留意 (點.)運算子  WHERE前後有空格
                 // AND拼接 WHERE 條件字串
                 // 將語法字串及參數帶入 取得一個完整的SQL句子
 
-                // join() 是 PHP 函數，用來將陣列元素串接成字串
-                // 第一個參數 " AND " 是分隔符號 連接多條件查詢
+                // join() 是 PHP 函數，將陣列元素 串接成字串
+                // 第一個參數 " AND " 是分隔符號 連接 多條件查詢
                 // 第二個參數 $tmp 是要串接的陣列
 
-                // 多個查詢條件 用 "AND" 連接
+                // "AND" 連接多個查詢條件
                 // 如果$tmp為SQL多條件字串
                 // join(" AND ", ['id' => 1, 'name' => 'John'])
                 // 輸出：`id`='1' AND `name`='John'  (`id`=1 數字可不用' ')
@@ -213,12 +210,22 @@ class DB
             } else {
                 $sql .= $arg[0];
                 // 將原本的 $sql 變數內容保留，準備在後面加上新內容
-                // 等同於 $sql .= " where id=1"
-                // 例如：$sql = "select * from title
+                // 等同 $sql .= " where id=1"
+                // 例如 $sql = "select * from title
                 // 程式假設使用者傳入的是完整的 SQL 片段，不用再加"where" ~ 看不懂@@
 
             }
         }
+// .= 是一個 複合賦值運算符
+
+/**
+結合了 字串串接 (string concatenation) 和 賦值 (assignment) 的功能 
+它的作用是將右邊的值附加到左邊變數的值之後，然後將結果賦值給左邊的變數
+$variable .= $value 等同於 $variable = $variable . $value。
+= 是一個賦值運算符，用於將一個值賦給一個變數。
+. 是一個字串串接運算符，用於將兩個字串連接在一起。
+$variable .= $value 先將 $variable 的值與 $value 的值串接，然後將結果存回 $variable，相當於在原來的字串後面加上新的內容。 
+**/
 
         // 步驟5：處理第二個參數
         // 如果有第二個參數，則附加到SQL語句where之後
