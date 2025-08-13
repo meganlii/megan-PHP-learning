@@ -275,7 +275,7 @@ class DB
 
     }
 
-    // 4-5 查詢 資料筆數 select count(*)
+    // 4-5 查詢 資料筆數 select count(*) 這是之後才補上的函數
     // count() SQL內建函式 聚合函式
     function count(...$arg)
     {
