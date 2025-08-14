@@ -458,14 +458,18 @@ class DB
 // 建立資料庫物件
 /*
  * 使用 new語法 建立一個DB連線物件，並將這個物件指定給一個變數$DB
+ * 類似 宣告$pdo= new DB($dsn,'root','')
+
  * 變數$DB(大寫開頭) = new DB('資料表名稱');
- * 資料表名稱 用複數較理想 ['titles'] 
+ * 資料表名稱 實務上 用複數 較理想 ['titles'] 因應檢定考試取巧之需
+ * 可與單數形式的資料欄位區分
+
  * 建立一個專門處理 [ title 資料表] 的 [ 物件 $Title ]
  * $Title 物件變數  ['title'] 數值/參數
  * 用法 $title = $Title->find(1);
  */
 
-$Title = new DB('title');  //用複數較理想 ['titles'] 
+$Title = new DB('title');  // 用複數較理想 要加s ['titles'] 
 $Ad = new DB('ad');
 $Mvim = new DB('mvim');
 $Image = new DB('image');
