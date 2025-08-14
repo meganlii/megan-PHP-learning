@@ -15,7 +15,8 @@ function q($sql){
 }
 
 function to($url){
-    header("location:".$url);
+    // header("location:".$url); 雙引號內 直接以空格區分不同字串或變數
+    header("location: $url");
 }
 
 class DB{

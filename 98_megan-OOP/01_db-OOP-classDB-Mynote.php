@@ -120,7 +120,8 @@ PDO::FETCH_NUM    回傳 帶欄位 索引的資料
 // 接收一個參數 $url（要跳轉的目標網址）
 function to($url)
 {
-    header("location:" . $url);
+    header("location: $url"); 
+    // header("location:" . $url); 雙引號內 直接以空格區分不同字串或變數
     // header() 函數發送 HTTP 標頭Location
     // 標頭Location 會告訴瀏覽器 跳轉到指定的網址
     // . $url 將參數中的網址串接到 "location:" 後面
