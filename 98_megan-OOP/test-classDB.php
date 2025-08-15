@@ -14,16 +14,18 @@ function dd($array) {
 }
 
 // 變數不用加引號 會變成字串
+// 雙引號內 直接以空格區分不同字串或變數
 function to($url) {
   // header('location:' . $url); 
-  header("location: $url");  // 雙引號內 直接以空格區分不同字串或變數
+  header("location: $url");  
 }
 
-function q($sql) {
-  $dsn = 'mysqlhost:localhot;dbname=db02;charset:utf8';
-  $pdo = 
-  return 
-
+// mysql:localhost 少mysql:host
+function q($sql){
+  $dsn = 'mysql:host=localhost;dbname:db02;charset:utf8';
+  $pdo = new PDO($dsn,'root','');
+  return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 ?>
