@@ -187,8 +187,8 @@ class DB
      */
 
 
-    // 步驟4 自訂函式
-    // 共7個FN：const  all//find(查R)  count  save(增C.改U)//del(刪D)  arraytosql
+    // 步驟4 自訂函式-CRUD / CURD
+    // 共7個FN：const  all//find(查R)  count(額外加)  save(增C.改U)//del(刪D)  arraytosql
     
     // 4-1 $table->all()-查詢 符合條件的 "全部資料" select *
     // 五組變數 $sql  三個if  return

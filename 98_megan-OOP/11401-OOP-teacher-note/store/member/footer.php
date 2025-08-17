@@ -1,1 +1,0 @@
-<footer>2025 版權所有</footer>    
