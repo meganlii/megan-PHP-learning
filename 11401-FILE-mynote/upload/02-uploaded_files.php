@@ -3,7 +3,6 @@ echo "<pre>";
 print_r($_POST);
 print_r($_FILES);
 echo "</pre>";
-
 include_once "db.php";
 
 // 重新更名 重新編碼需求 開放大量上傳避免檔名重複 統一化管理
