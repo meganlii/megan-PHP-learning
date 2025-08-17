@@ -74,13 +74,19 @@
 <h1 class="header">檔案上傳練習</h1>
 
 <!----建立你的表單及設定編碼----->
+<!-- action="./02-uploaded_files.php" 表單資料post送到api處理 -->
+<!-- enctype="multipart/form-data" 要背 配合type="file" 才會用編碼方式傳送file 一般表單不用加 -->
+<!-- multi-type 容易拼錯mu-ti -->
+<!-- id="name" 跟<label>連動使用 -->
+<!-- required 要有檔案才能上傳表單 -->
 <button style="display:block;margin:15px auto;" id="More">再加一筆</button>
+
 <form action="./02-uploaded_files.php" method="post" enctype="multipart/form-data">
     <div id="uploads">
         <div class="form-group">
+
             <label for="name">選擇檔案上傳：</label>
             <input type="file" name="name[]" id="name" required>
-        
             <select name="type[]" id="type">
                 <option value="image">影像</option>
                 <option value="document">文件</option>
@@ -94,6 +100,7 @@
     </div>
 
     <button type="submit">上傳檔案</button>
+
 </form>
 
 
