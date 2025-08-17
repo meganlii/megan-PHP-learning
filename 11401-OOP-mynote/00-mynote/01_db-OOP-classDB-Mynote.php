@@ -173,7 +173,7 @@ class DB
     // 物件被實例化(new DB)時 會先執行的方法
     function __construct($table)
     {
-        $this->table = $table;  // $this替換資料表名稱 帶參數的概念
+        $this->table = $table;  // $this替換 資料表名稱 帶參數的概念
         $this->pdo = new PDO($this->dsn, 'root', '');
     }
 
@@ -190,7 +190,7 @@ class DB
     // 步驟4 自訂函式-CRUD / CURD
     // 共7個FN：const  all//find(查R)  count(額外加)  save(增C.改U)//del(刪D)  arraytosql
     
-    // 4-1 $table->all()-查詢 符合條件的 "全部資料" select *
+    // 4-1 $Table->all()-查詢 符合條件的 "全部資料" select *
     // 五組變數 $sql  三個if  return
     /*
      * 使用 "..." 可變/不定(數量的)參數  三個點點點...
@@ -308,7 +308,7 @@ class DB
 
     }
 
-    // 4-2 $table->find($id)-查詢 符合條件的 "單筆資料" select *
+    // 4-2 $Table->find($id)-查詢 符合條件的 "單筆資料" select *
     // 複製all()，變數改為($id)  刪除isset()
     /*
      * 找某個特定id的資料  回傳資料表指定id的資料 
@@ -461,12 +461,12 @@ class DB
  * 類似 宣告$pdo= new DB($dsn,'root','')
 
  * 變數$DB(大寫開頭) = new DB('資料表名稱');
- * 資料表名稱 實務上 用複數 較理想 ['titles'] 因應檢定考試取巧之需
+ * 資料表名稱 實務上 用複數 較理想['titles']  因應檢定考試取巧之需
  * 可與單數形式的資料欄位區分
 
  * 建立一個專門處理 [ title 資料表] 的 [ 物件 $Title ]
  * $Title 物件變數  ['title'] 數值/參數
- * 用法 $title = $Title->find(1);
+ * 用法 $this->table = $title = $Title->find(1);
  */
 
 $Title = new DB('title');  // 用複數較理想 要加s ['titles'] 
