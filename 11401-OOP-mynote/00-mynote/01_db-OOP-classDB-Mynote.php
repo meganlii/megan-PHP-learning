@@ -466,7 +466,7 @@ class DB
 
  * 建立一個專門處理 [ title 資料表] 的 [ 物件 $Title ]
  * $Title 物件變數  ['title'] 數值/參數
- * 用法 $this->table = $title = $Title->find(1);
+ * 用法 $this->table = $title = $Title->find(1)
  */
 
 $Title = new DB('title');  // 用複數較理想 要加s ['titles'] 
