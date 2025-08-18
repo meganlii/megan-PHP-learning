@@ -18,6 +18,7 @@ https://bquiz.mackliu.com/solve/solve01-02.html
 
 2.寫FN name( ){ }，先寫名稱/小大括號/變數  例 function all(...$arg)
 all//find(查R) count  save(增C.改U)//del(刪D)  arraytosql
+R-read顯示 在SQL稱為query  顯示功能屬於R
 
 3.再寫new DB('table') 物件
 $Title = new DB('title');
