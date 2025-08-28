@@ -440,7 +440,6 @@ class DB
     // 輸出：['`id` = \'1\'', '`name` = \'John\'']
     // 用於生成 SQL 查詢條件
     // 這個函式會被 all()、find()、save() 和 del() 使用
-
     private function arraytosql($array)
     {
         // 步驟2：初始化一個空陣列 $tmp
