@@ -467,7 +467,7 @@ class DB
 
  * 建立一個專門處理 [ title 資料表] 的 [ 物件 $Title ]
  * $Title 物件變數  ['title'] 數值/參數
- * 用法 $this->table = $title = $Title->find(1)
+ * 用法 $this->table = $title = $Title->find($id)
  * -> 是 PHP物件運算子，用來呼叫物件的方法或存取物件的屬性。
  */
 
